@@ -5,12 +5,19 @@
   import { publishedToDate } from '$lib/ui/util/date'
   import { Button, Menu, MenuButton } from 'mono-svelte'
   import RelativeDate from 'mono-svelte/util/RelativeDate.svelte'
-  import { EllipsisVertical, Flag, Icon, Trash } from 'svelte-hero-icons/dist'
+  import {
+    EllipsisVertical,
+    Flag,
+    Icon,
+    Pencil,
+    Trash,
+  } from 'svelte-hero-icons/dist'
 
   interface Props {
     message: PrivateMessageView
     primary?: boolean
     ondelete?: (shouldDelete: boolean) => void
+    onedit?: () => void
     onreport?: (report: boolean) => void
     showTimestamp?: boolean
   }
@@ -19,6 +26,7 @@
     message,
     primary = false,
     ondelete,
+    onedit,
     onreport,
     showTimestamp = true,
   }: Props = $props()
@@ -64,6 +72,9 @@
       </Button>
     {/snippet}
     {#if primary}
+      <MenuButton onclick={() => onedit?.()} icon={Pencil}>
+        {$t('form.edit')}
+      </MenuButton>
       <MenuButton
         color="danger-subtle"
         onclick={() => ondelete?.(true)}

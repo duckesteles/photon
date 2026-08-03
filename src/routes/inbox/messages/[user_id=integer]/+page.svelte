@@ -11,7 +11,7 @@
   import UserLink from '$lib/feature/user/UserLink.svelte'
   import { Header } from '$lib/ui/layout'
   import { publishedToDate } from '$lib/ui/util/date'
-  import { Button, Material, TextInput, toast } from 'mono-svelte'
+  import { Button, Material, Modal, TextInput, toast } from 'mono-svelte'
   import { onDestroy, onMount, tick } from 'svelte'
   import {
     ArrowLeft,
@@ -32,6 +32,13 @@
     message: '',
     loading: false,
   })
+
+  let editing = $state({
+    id: undefined as number | undefined,
+    content: '',
+    loading: false,
+  })
+  let editingOpen = $state(false)
 
   let chatWindow = $state<HTMLDivElement>()
 
@@ -71,6 +78,34 @@
       )
     }
   })
+
+  async function saveEdit() {
+    if (!editing.id || editing.content == '') return
+
+    editing.loading = true
+
+    try {
+      const res = await client().editPrivateMessage({
+        private_message_id: editing.id,
+        content: editing.content,
+      })
+
+      const index = data.message.value.private_messages.findLastIndex(
+        (i) => i.private_message.id == editing.id,
+      )
+      if (index != -1)
+        data.message.value.private_messages[index] = res.private_message_view
+
+      editingOpen = false
+    } catch (err) {
+      toast({
+        content: errorMessage(err as string),
+        type: 'error',
+      })
+    }
+
+    editing.loading = false
+  }
 
   async function deleteMessage(id: number) {
     await client().deletePrivateMessage({
@@ -219,6 +254,11 @@
         >
           <Message
             ondelete={() => deleteMessage(private_message.private_message.id)}
+            onedit={() => {
+              editing.id = private_message.private_message.id
+              editing.content = private_message.private_message.content
+              editingOpen = true
+            }}
             onreport={() => report(private_message)}
             message={private_message}
             primary={private_message.creator.id !=
@@ -230,6 +270,27 @@
     </ul>
   </div>
 </Material>
+
+{#if editing.id}
+  <Modal bind:open={editingOpen} title={$t('form.edit')}>
+    <MarkdownEditor bind:value={editing.content} images={false} previewButton />
+    <div class="flex flex-row gap-2">
+      <Button size="lg" class="flex-1" onclick={() => (editingOpen = false)}>
+        {$t('common.cancel')}
+      </Button>
+      <Button
+        size="lg"
+        class="flex-1"
+        color="primary"
+        loading={editing.loading}
+        disabled={editing.loading}
+        onclick={saveEdit}
+      >
+        {$t('common.save')}
+      </Button>
+    </div>
+  </Modal>
+{/if}
 {#await data.message.value then message}
   <div class="sticky bottom-4 p-4">
     <form

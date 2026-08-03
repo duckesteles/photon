@@ -21,7 +21,23 @@ instance and cannot succeed against a configured one.
 - Added `transferCommunity`, `leaveAdmin`, and custom emoji management to the
   client interface.
 - Wired community delete, remove and hide into a confirmed danger zone on the
-  community settings page.
+  community settings page, and community ownership transfer into the moderator
+  list.
+- Added editing for sent direct messages.
+- Added admin pages for banned users and for custom emoji management.
+- Added an option for an admin to resign.
+- Reviewed registration applications are now read back from the server instead
+  of being patched locally from a guess at what changed.
+
+Fixed type errors that predate this work, so the project checks clean:
+
+- `FeedTypes['/f/[id]']` described a response the route never returned. It named
+  a `multi: GetMultiCommunityResponse` field, but the loader returns
+  `feed: Promise<FeedView | undefined>`, mirroring `/topic/[id]`. The referenced
+  type did not exist at all.
+- Two `resolve()` calls named the route `/comment/[instance]/[id]`, which does
+  not exist. The directory is `[id=integer]`, so the calls fell back to an
+  overload that takes no parameters.
 - Moved `donation_dialog_shown` off a raw `fetch` and onto the client.
 - Removed the `getPostReplies` declaration. It named a request type that does
   not exist, no adapter implemented it and nothing called it, so it could never

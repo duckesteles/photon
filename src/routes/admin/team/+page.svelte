@@ -8,7 +8,13 @@
   import Placeholder from '$lib/ui/info/Placeholder.svelte'
   import { CommonList, Header } from '$lib/ui/layout'
   import { Button, toast } from 'mono-svelte'
-  import { Icon, Plus, QuestionMarkCircle, Trash } from 'svelte-hero-icons/dist'
+  import {
+    ArrowRightStartOnRectangle,
+    Icon,
+    Plus,
+    QuestionMarkCircle,
+    Trash,
+  } from 'svelte-hero-icons/dist'
 
   let { data: pageData } = $props()
   let data = $state(pageData)
@@ -46,9 +52,48 @@
       })
     }
   }
+
+  // Resigning cannot be reversed by the person doing it, so it asks twice the
+  // same way removing another admin does.
+  async function leaveAdmin(confirm: boolean): Promise<void | number> {
+    if (!confirm)
+      return toast({
+        content: $t('routes.admin.team.leave.warning'),
+        action: () => leaveAdmin(true),
+      })
+
+    if (!profile.current?.jwt) return
+
+    try {
+      const res = await client().leaveAdmin()
+
+      data.site = res
+      toast({
+        content: $t('routes.admin.team.leave.done'),
+        type: 'success',
+      })
+    } catch (err) {
+      toast({
+        content: errorMessage(err as string),
+        type: 'error',
+      })
+    }
+  }
 </script>
 
-<Header pageHeader>{$t('routes.admin.team.title')}</Header>
+<Header pageHeader>
+  {$t('routes.admin.team.title')}
+  {#snippet extended()}
+    <Button
+      color="danger-subtle"
+      size="md"
+      icon={ArrowRightStartOnRectangle}
+      onclick={() => leaveAdmin(false)}
+    >
+      {$t('routes.admin.team.leave.action')}
+    </Button>
+  {/snippet}
+</Header>
 {#if data.site}
   <ul>
     {#if data.site.admins.length <= 0}

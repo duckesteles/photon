@@ -44,6 +44,14 @@
       href: '/admin/media',
       name: $t('routes.admin.media.title'),
     },
+    {
+      href: '/admin/banned',
+      name: $t('routes.admin.banned.title'),
+    },
+    {
+      href: '/admin/emojis',
+      name: $t('routes.admin.emojis.title'),
+    },
   ]}
 />
 <div class="flex flex-col gap-4 h-full">

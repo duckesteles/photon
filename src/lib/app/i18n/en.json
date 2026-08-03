@@ -452,6 +452,11 @@
                 "empty": {
                     "title": "No admins",
                     "description": "Somehow there's no admins of this site. How??"
+                },
+                "leave": {
+                    "action": "Resign as admin",
+                    "warning": "You will lose admin access to this server. Another admin has to add you back. Tap again to confirm.",
+                    "done": "You are no longer an admin."
                 }
             },
             "federation": {
@@ -474,6 +479,25 @@
             },
             "media": {
                 "title": "Media"
+            },
+            "banned": {
+                "title": "Banned users",
+                "empty": {
+                    "title": "No banned users",
+                    "description": "Nobody is banned from this server."
+                }
+            },
+            "emojis": {
+                "title": "Emojis",
+                "empty": {
+                    "title": "No custom emojis",
+                    "description": "Custom emojis added here can be used across this server."
+                },
+                "shortcode": "Shortcode",
+                "url": "Image URL",
+                "altText": "Alt text",
+                "category": "Category",
+                "add": "Add emoji"
             }
         },
         "verifyEmail": {
@@ -640,7 +664,8 @@
             "warning": "This will delete ALL of this user's submissions here.",
             "expires": "Expires (UTC)",
             "banFromCommunity": "Ban user from community",
-            "unbanFromCommunity": "Unban user from community"
+            "unbanFromCommunity": "Unban user from community",
+            "unbanFromSite": "Unban"
         },
         "removeSubmission": {
             "title": "Removing Submission",
@@ -668,6 +693,11 @@
         "unlock": "Unlock",
         "remove": "Remove",
         "restore": "Restore",
+        "transfer": {
+            "action": "Transfer ownership",
+            "confirm": "{{user}} will become the top moderator of this community. You cannot undo this yourself.",
+            "done": "Community ownership transferred."
+        },
         "danger": {
             "title": "Danger zone",
             "delete": "Delete community",
@@ -737,6 +767,9 @@
         "failCSV": "Failed to read CSV",
         "removeAdminWarning": "Are you sure you want to remove that admin?",
         "removeAdmin": "Removed that admin.",
+        "unbanned": "That user is no longer banned.",
+        "emojiSaved": "Emoji saved.",
+        "emojiDeleted": "Emoji deleted.",
         "failFindUser": "Could not find that user.",
         "addMod": "Added that moderator.",
         "updateMods": "Updated community moderators.",

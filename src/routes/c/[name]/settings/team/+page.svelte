@@ -7,7 +7,7 @@
   import Avatar from '$lib/ui/generic/Avatar.svelte'
   import { CommonList, Header } from '$lib/ui/layout'
   import { action, Button, modal, toast } from 'mono-svelte'
-  import { Icon, Plus, Trash } from 'svelte-hero-icons/dist'
+  import { Icon, Key, Plus, Trash } from 'svelte-hero-icons/dist'
   import type { PageData } from '../$types'
 
   interface Props {
@@ -58,6 +58,29 @@
     formData.addingModerator = false
   }
 
+  async function transferCommunity(id: number) {
+    if (!profile.current?.jwt) return
+
+    try {
+      const res = await getClient().transferCommunity({
+        community_id: data.community.value.community_view.community.id,
+        person_id: id,
+      })
+
+      data.community.value.moderators = res.moderators
+
+      toast({
+        content: $t('moderation.transfer.done'),
+        type: 'success',
+      })
+    } catch (err) {
+      toast({
+        content: errorMessage(err as string),
+        type: 'error',
+      })
+    }
+  }
+
   async function removeMod(id: number) {
     if (!profile.current?.jwt) return
 
@@ -100,29 +123,58 @@
           </span>
         </div>
       </div>
-      <Button
-        size="square-md"
-        onclick={() => {
-          modal({
-            title: $t('common.remove'),
-            body: `Are you sure you want to remove ${moderator.moderator.name} as a moderator?`,
-            actions: [
-              action({
-                content: $t('common.remove'),
-                action: () => removeMod(moderator.moderator.id),
-                type: 'danger',
-                close: true,
+      <div class="flex items-center gap-2">
+        <Button
+          size="square-md"
+          title={$t('moderation.transfer.action')}
+          onclick={() => {
+            modal({
+              title: $t('moderation.transfer.action'),
+              body: $t('moderation.transfer.confirm', {
+                user: moderator.moderator.name,
               }),
-              action({
-                content: $t('common.cancel'),
-                close: true,
-              }),
-            ],
-          })
-        }}
-      >
-        <Icon src={Trash} mini size="16" />
-      </Button>
+              actions: [
+                action({
+                  content: $t('moderation.transfer.action'),
+                  action: () => transferCommunity(moderator.moderator.id),
+                  type: 'danger',
+                  close: true,
+                }),
+                action({
+                  content: $t('common.cancel'),
+                  close: true,
+                }),
+              ],
+            })
+          }}
+        >
+          <Icon src={Key} mini size="16" />
+        </Button>
+        <Button
+          size="square-md"
+          title={$t('common.remove')}
+          onclick={() => {
+            modal({
+              title: $t('common.remove'),
+              body: `Are you sure you want to remove ${moderator.moderator.name} as a moderator?`,
+              actions: [
+                action({
+                  content: $t('common.remove'),
+                  action: () => removeMod(moderator.moderator.id),
+                  type: 'danger',
+                  close: true,
+                }),
+                action({
+                  content: $t('common.cancel'),
+                  close: true,
+                }),
+              ],
+            })
+          }}
+        >
+          <Icon src={Trash} mini size="16" />
+        </Button>
+      </div>
     </div>
   {/snippet}
 </CommonList>

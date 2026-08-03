@@ -3,8 +3,8 @@ import type {
   CommentView,
   CommunityView,
   GetComments,
+  FeedView,
   GetCommunityResponse,
-  GetMultiCommunityResponse,
   GetPersonDetails,
   GetPersonDetailsResponse,
   GetPost,
@@ -117,9 +117,9 @@ export interface FeedTypes {
     GetPosts,
     {
       posts: PostView[]
-      multi: GetMultiCommunityResponse
       next_page?: string
-      params: GetPosts
+      params: GetPosts & { page_cursor: string }
+      feed: Promise<FeedView | undefined>
       client: {
         itemHeights?: (number | null)[]
         lastSeen?: number
