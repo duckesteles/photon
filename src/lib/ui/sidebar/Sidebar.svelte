@@ -4,6 +4,7 @@
   import { t } from '$lib/app/i18n'
   import { LINKED_INSTANCE_URL } from '$lib/app/instance.svelte'
   import { settings } from '$lib/app/settings.svelte'
+  import { SOURCE_URL } from '$lib/app/source'
   import { theme } from '$lib/app/theme/theme.svelte'
   import { communityLink } from '$lib/app/util.svelte'
   import ProfileSelection from '$lib/feature/user/ProfileSelection.svelte'
@@ -188,13 +189,10 @@
         {__VERSION__}
       </span>
     </div>
+    <a class="text-blue-600 dark:text-blue-400" href={SOURCE_URL}>
+      {$t('nav.menu.source')}
+    </a>
     {#if env.PUBLIC_XYLIGHT_MODE?.toLowerCase() == 'true'}
-      <a
-        class="text-blue-600 dark:text-blue-400"
-        href="https://github.com/xyphyn/photon"
-      >
-        {$t('nav.menu.source')}
-      </a>
       <a
         class="text-blue-600 dark:text-blue-400"
         href="https://buymeacoffee.com/xylight"

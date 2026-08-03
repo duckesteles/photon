@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { env } from '$env/dynamic/public'
   import { site } from '$lib/api/client.svelte'
   import { profile } from '$lib/app/auth'
   import { t } from '$lib/app/i18n'
   import { settings } from '$lib/app/settings.svelte'
+  import { SOURCE_URL } from '$lib/app/source'
   import { theme } from '$lib/app/theme/theme.svelte'
   import InstanceCard from '$lib/feature/instance/InstanceCard.svelte'
   import {
@@ -185,15 +185,13 @@
     >
       <Icon src={ServerStack} size="16" micro />
     </Button>
-    {#if env.PUBLIC_XYLIGHT_MODE?.toLowerCase() == 'true'}
-      <Button
-        color="tertiary"
-        href="https://github.com/Xyphyn/Photon"
-        title={$t('nav.menu.source')}
-        size="square-md"
-      >
-        <Icon src={CodeBracketSquare} size="16" micro />
-      </Button>
-    {/if}
+    <Button
+      color="tertiary"
+      href={SOURCE_URL}
+      title={$t('nav.menu.source')}
+      size="square-md"
+    >
+      <Icon src={CodeBracketSquare} size="16" micro />
+    </Button>
   </div>
 </li>
