@@ -1,3 +1,4 @@
+
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="screenshots/compact-dark.png">
     <img alt="Photon front page, compact layout" src="screenshots/compact-light.png" width="100%">
