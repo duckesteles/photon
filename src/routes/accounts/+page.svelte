@@ -83,7 +83,7 @@
       <Button
         onclick={() => {
           removing.shown = false
-          if (removing.account) profile.remove(removing.account.id)
+          if (removing.account) profile.logout(removing.account.id)
         }}
         size="lg"
         class="flex-1"

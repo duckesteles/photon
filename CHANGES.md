@@ -5,6 +5,28 @@ AGPL-3.0-only. Section 5(a) of the license requires modified versions to carry
 prominent notices stating that they were changed, so every deviation from
 upstream is recorded here.
 
+## 2026-08-04 — Lemmy API coverage
+
+Audited Photon against the route definitions of Lemmy 0.19.20 and closed the
+gaps found. Of the 101 API endpoints, 91 were reachable; the client interface
+now declares all of them except `POST /site`, which only bootstraps an empty
+instance and cannot succeed against a configured one.
+
+- Logging out now ends the session on the instance. Previously the profile was
+  only dropped from local storage, leaving the token valid server side.
+- Added `validateAuth`, and used it to tell an expired login apart from an
+  instance that is failing to return user data.
+- Added `exportSettings` and `importSettings`, with a backup section on the
+  account settings page. Exports are built and read entirely in the browser.
+- Added `transferCommunity`, `leaveAdmin`, and custom emoji management to the
+  client interface.
+- Wired community delete, remove and hide into a confirmed danger zone on the
+  community settings page.
+- Moved `donation_dialog_shown` off a raw `fetch` and onto the client.
+- Removed the `getPostReplies` declaration. It named a request type that does
+  not exist, no adapter implemented it and nothing called it, so it could never
+  compile. This clears two of the type errors that were already present.
+
 ## 2026-08-04
 
 - Added `src/lib/app/source.ts`, exporting the repository URL used by the

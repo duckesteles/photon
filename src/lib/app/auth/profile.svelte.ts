@@ -8,7 +8,7 @@ import { toast } from 'mono-svelte'
 import { errorMessage } from '../error'
 import { t } from '../i18n'
 import { DEFAULT_INSTANCE_URL } from '../instance.svelte'
-import { instanceToURL, moveItem } from '../util.svelte'
+import { moveItem } from '../util.svelte'
 import { InboxService } from './inbox.svelte'
 
 function getFromStorage<T>(key: string): T | undefined {
@@ -59,6 +59,7 @@ const getCookie = (key: string): string | undefined => {
 }
 
 export class Profile {
+  private static readonly LOGOUT_TIMEOUT = 5 * 1000
   private static readonly DONATION_CHECK_TIMEOUT = 3 * 1000
   private static readonly DONATION_REMINDER_INTERVAL = 375 * 24 * 60 * 60 * 1000
 
@@ -112,13 +113,11 @@ export class Profile {
   }
 
   private async initCookieMigrate() {
-    if (
-      !(
-        env.PUBLIC_MIGRATE_COOKIE &&
-        this.meta.profiles.length == 0 &&
-        env.PUBLIC_INSTANCE_URL
-      )
-    )
+    if (!(
+      env.PUBLIC_MIGRATE_COOKIE &&
+      this.meta.profiles.length == 0 &&
+      env.PUBLIC_INSTANCE_URL
+    ))
       return
 
     const jwt = getCookie('jwt')
@@ -156,19 +155,40 @@ export class Profile {
             long: true,
           })
 
-          // lemmy js client donation dialog is broken
-          fetch(
-            `${instanceToURL(this.current.instance)}/api/v3/user/donation_dialog_shown`,
-            {
-              method: 'POST',
-              headers: {
-                authorization: `Bearer ${this.current.jwt}`,
-              },
-            },
-          )
+          this.client.donationDialogShown().catch(() => {
+            /* marking the dialog as seen is not worth interrupting the user */
+          })
         }
       }
     }, delay)
+  }
+
+  /**
+   * A site response without user data means either an expired login or an
+   * instance in trouble, and the two call for different reactions. The token is
+   * only checked on that failure path, so the common case costs no extra
+   * request.
+   */
+  private async reportMissingUserData() {
+    let authValid = false
+    try {
+      await client({
+        instanceURL: this.#current.instance,
+        auth: this.#current.jwt,
+        clientType: this.#current.client,
+      }).validateAuth()
+      authValid = true
+    } catch {
+      authValid = false
+    }
+
+    toast({
+      content: authValid
+        ? 'Your login is still valid, but the instance did not return your user data. It is likely having trouble.'
+        : 'Your login has expired or was revoked. Sign in again to continue.',
+      type: 'error',
+      long: true,
+    })
   }
 
   async fetchUserData() {
@@ -181,12 +201,7 @@ export class Profile {
         this.#current.instance,
         this.#current.client,
       )
-      if (!res?.user)
-        toast({
-          content:
-            "Your account's instance did not return your user data. Your login may have expired.",
-          type: 'error',
-        })
+      if (!res?.user) await this.reportMissingUserData()
 
       // TODO update authentication handling to not be this dynamic
       if (this.#current.id != startId) {
@@ -238,6 +253,40 @@ export class Profile {
       })
       return null
     }
+  }
+
+  /**
+   * Ends the session on the instance before dropping it locally. Removing the
+   * profile on its own leaves the token usable by anyone holding it, so a
+   * failure here is reported rather than swallowed. The local profile is
+   * removed either way, because that is what the user asked for.
+   */
+  async logout(id: number) {
+    const target = this.meta.profiles.find((p) => p.id == id)
+
+    if (target?.jwt) {
+      try {
+        await client({
+          instanceURL: target.instance,
+          auth: target.jwt,
+          clientType: target.client,
+          func: (input, init) =>
+            fetch(input, {
+              ...init,
+              signal: AbortSignal.timeout(Profile.LOGOUT_TIMEOUT),
+            }),
+        }).logout()
+      } catch {
+        toast({
+          content:
+            'Could not end the session on the instance, so the login may still be valid there. Revoke it from your account settings if this was not your own device.',
+          type: 'warning',
+          long: true,
+        })
+      }
+    }
+
+    this.remove(id)
   }
 
   remove(id: number) {

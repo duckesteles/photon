@@ -668,6 +668,13 @@
         "unlock": "Unlock",
         "remove": "Remove",
         "restore": "Restore",
+        "danger": {
+            "title": "Danger zone",
+            "delete": "Delete community",
+            "hide": "Hide community",
+            "unhide": "Unhide community",
+            "confirm": "This affects {{community}} for everyone on the instance, not just you."
+        },
         "label": "Moderation",
         "labelInstanceOnly": "Moderation (Local only)",
         "feature": "Feature",
@@ -761,7 +768,8 @@
         "settingsImport": "Successfully imported settings",
         "settingsImportWarning": "The imported settings don't seem valid. Are you sure you want to import this?",
         "userLoading": "Still loading your user data...",
-        "lemmyDonate": "Your account's server runs Lemmy, and the developers are requesting donations. They are able to develop Lemmy as an open source platform, free of tracking and ads, thanks to the generosity of its users.\n\nAnnually, they ask you to consider donating to support their work, and allow them to continue maintaining and improving Lemmy.\n\n[Donate](https://join-lemmy.org/donate)\n\n*Note: this is a donation to Lemmy, not Photon.*"
+        "lemmyDonate": "Your account's server runs Lemmy, and the developers are requesting donations. They are able to develop Lemmy as an open source platform, free of tracking and ads, thanks to the generosity of its users.\n\nAnnually, they ask you to consider donating to support their work, and allow them to continue maintaining and improving Lemmy.\n\n[Donate](https://join-lemmy.org/donate)\n\n*Note: this is a donation to Lemmy, not Photon.*",
+        "accountDataImported": "Account data imported from the file."
     },
     "settings": {
         "title": "Settings",
@@ -948,6 +956,10 @@
         },
         "donate": {
             "description": "Photon will always be free and open-source, and is continously developed and designed to be helpful. If you like Photon and want to financially support its development, you can donate here."
+        },
+        "backup": {
+            "title": "Account data on the instance",
+            "description": "Download or restore the settings your instance stores for your account, including blocked users, blocked communities and subscriptions. This is separate from Photon's own settings."
         }
     },
     "error": {

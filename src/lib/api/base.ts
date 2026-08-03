@@ -271,7 +271,23 @@ export abstract class BaseClient {
   abstract listMedia(form: types.ListMedia): Promise<types.ListMediaResponse>
   abstract voteOnPoll?(form: types.PollVote): Promise<types.PostView>
   abstract setNote?(form: types.SetNote): Promise<types.PersonView>
-  abstract getPostReplies(form: types.GetPostReplies)
+  abstract validateAuth(): Promise<types.SuccessResponse>
+  abstract exportSettings(): Promise<string>
+  abstract importSettings(form: unknown): Promise<types.SuccessResponse>
+  abstract leaveAdmin(): Promise<types.GetSiteResponse>
+  abstract transferCommunity(
+    form: types.TransferCommunity,
+  ): Promise<types.GetCommunityResponse>
+  abstract createCustomEmoji(
+    form: types.CreateCustomEmoji,
+  ): Promise<types.CustomEmojiResponse>
+  abstract editCustomEmoji(
+    form: types.EditCustomEmoji,
+  ): Promise<types.CustomEmojiResponse>
+  abstract deleteCustomEmoji(
+    form: types.DeleteCustomEmoji,
+  ): Promise<types.SuccessResponse>
+  abstract donationDialogShown(): Promise<types.SuccessResponse>
 }
 
 export type NullableFnArg<T, Fallback = never> = T extends (

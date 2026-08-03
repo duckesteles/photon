@@ -1,4 +1,5 @@
 <script lang="ts">
+  import CommunityDangerZone from '$lib/feature/community/CommunityDangerZone.svelte'
   import CommunityForm from '$lib/feature/community/CommunityForm.svelte'
   import CommunityTitle from '$lib/feature/community/CommunityTitle.svelte'
   import { Header } from '$lib/ui/layout'
@@ -34,4 +35,7 @@
   >
     {#snippet formtitle()}{/snippet}
   </CommunityForm>
+  <CommunityDangerZone
+    community={data.community.value.community_view.community}
+  />
 </div>

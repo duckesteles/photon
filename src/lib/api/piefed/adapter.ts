@@ -792,6 +792,15 @@ const methods: MethodDefinitions = {
   editSite: 'unsupported',
   deleteImage: 'unsupported',
   listMedia: 'unsupported',
+  validateAuth: 'unsupported',
+  exportSettings: 'unsupported',
+  importSettings: 'unsupported',
+  leaveAdmin: 'unsupported',
+  transferCommunity: 'unsupported',
+  createCustomEmoji: 'unsupported',
+  editCustomEmoji: 'unsupported',
+  deleteCustomEmoji: 'unsupported',
+  donationDialogShown: 'unsupported',
 } satisfies MethodDefinitions
 
 export const PiefedClientConstants = {

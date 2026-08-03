@@ -4,6 +4,7 @@
   import { profile } from '$lib/app/auth'
   import { t } from '$lib/app/i18n'
   import MarkdownEditor from '$lib/app/markdown/MarkdownEditor.svelte'
+  import SettingsBackup from '$lib/feature/user/SettingsBackup.svelte'
   import ImageInputUpload from '$lib/ui/form/ImageInputUpload.svelte'
   import { Header } from '$lib/ui/layout'
   import {
@@ -156,6 +157,8 @@
           </div>
         {/if}
       </Material>
+
+      <SettingsBackup />
     </div>
 
     <Button
