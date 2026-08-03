@@ -21,3 +21,6 @@ test-results
 # Used for automated screenshot workflow
 .github/__pycache__/
 .zed
+
+# Local design notes, not part of the distributed source
+/docs
