@@ -32,10 +32,15 @@
       link.href = url
       link.download = `photon-settings-${new Date().toISOString().slice(0, 10)}.json`
       link.click()
+
+      // Revoking synchronously can cancel the download before the browser has
+      // read the blob, so it waits for the current task to finish first.
+      const objectURL = url
+      setTimeout(() => URL.revokeObjectURL(objectURL), 0)
     } catch (error) {
+      if (url) URL.revokeObjectURL(url)
       toast({ content: errorMessage(error as string), type: 'error' })
     } finally {
-      if (url) URL.revokeObjectURL(url)
       exporting = false
     }
   }

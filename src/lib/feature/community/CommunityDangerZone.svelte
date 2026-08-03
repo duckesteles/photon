@@ -57,18 +57,23 @@
         return
       }
 
+      // The labels below read from these flags, so they have to reflect the new
+      // state or the buttons keep offering what was just done.
       if (pending == 'remove') {
-        await getClient().removeCommunity({
+        const res = await getClient().removeCommunity({
           community_id: community.id,
           removed: !community.removed,
           reason: reason || undefined,
         })
+        community.removed = res.community_view.community.removed
       } else {
+        const hidden = !community.hidden
         await getClient().hideCommunity({
           community_id: community.id,
-          hidden: !community.hidden,
+          hidden: hidden,
           reason: reason || undefined,
         })
+        community.hidden = hidden
       }
 
       toast({ content: $t('toast.updatedCommunity'), type: 'success' })

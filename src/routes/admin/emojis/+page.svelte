@@ -4,6 +4,7 @@
   import { profile } from '$lib/app/auth'
   import { errorMessage } from '$lib/app/error'
   import { t } from '$lib/app/i18n'
+  import { optimizeImageURL } from '$lib/feature/post/helpers'
   import Placeholder from '$lib/ui/info/Placeholder.svelte'
   import { CommonList, Header } from '$lib/ui/layout'
   import { Button, Material, TextInput, toast } from 'mono-svelte'
@@ -116,8 +117,10 @@
           class="flex items-center gap-2 min-w-0 text-left"
           onclick={() => edit(emoji)}
         >
+          <!-- Routed through the same helper as every other image so that a
+               configured image proxy is honoured here too. -->
           <img
-            src={emoji.custom_emoji.image_url}
+            src={optimizeImageURL(emoji.custom_emoji.image_url, 64)}
             alt={emoji.custom_emoji.alt_text}
             width="28"
             height="28"
