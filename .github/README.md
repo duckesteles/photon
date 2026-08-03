@@ -21,6 +21,12 @@
 
 # Photon
 
+> [!NOTE]
+> This repository is a modified fork of [Xyphyn/photon](https://github.com/Xyphyn/photon), maintained by [duckesteles](https://github.com/duckesteles).
+> It is not affiliated with or endorsed by the upstream project. Modifications made here are listed in [CHANGES.md](../CHANGES.md).
+>
+> Like the upstream project, this fork is licensed under AGPL-3.0-only. See [LICENSE](../LICENSE).
+
 Photon is a web app for the fediverse with helpful features and a nice UX.
 
 Jump to:
@@ -107,6 +113,8 @@ If you're hosting Photon for a Lemmy instance, you'll almost definitely want to 
 - `PUBLIC_SSR_ENABLED` `boolean`: When enabled, will **make page requests be rendered server side first**, which allows search engine indexing, and basic non-js usage.
 
 - `PUBLIC_INTERNAL_INSTANCE` `string`: Only relevant if `PUBLIC_SSR_ENABLED=true`. This is the domain that the **server will make API requests to.**
+
+- `PUBLIC_SOURCE_URL` `string` (default: this repository): The URL the in-app "Source" links point to. If you modify Photon, set this to the repository holding **your** modified source. AGPL-3.0 section 13 requires network users to be offered the source of the version they are actually using, so do not point this at an unrelated repository.
 
 - `PUBLIC_MIGRATE_COOKIE` `boolean`: Useful if moving from lemmy-ui. This will automatically migrate the logins for the users, making them not have to login again.
 
