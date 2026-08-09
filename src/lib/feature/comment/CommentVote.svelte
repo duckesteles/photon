@@ -34,6 +34,8 @@
       return
     }
 
+    const previous = { vote, upvotes, downvotes }
+
     switch (vote ?? 0) {
       case 0:
         // nothing was removed
@@ -57,6 +59,7 @@
     voteItem(comment, newVote)
       .then((res) => ({ upvotes, downvotes } = res))
       .catch((e) => {
+        ;({ vote, upvotes, downvotes } = previous)
         toast({ content: errorMessage(e), type: 'error' })
       })
   }

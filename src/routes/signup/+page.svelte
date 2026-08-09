@@ -24,7 +24,7 @@
   import Avatar from '$lib/ui/generic/Avatar.svelte'
   import { CommonList, Header } from '$lib/ui/layout'
   import { Button, Note, TextInput, toast } from 'mono-svelte'
-  import { onMount } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
   import { ArrowLeft, CheckCircle, Icon } from 'svelte-hero-icons/dist'
   import { preventDefault } from 'svelte/legacy'
 
@@ -33,6 +33,10 @@
   let placeholder = $state(DEFAULT_INSTANCE_URL)
 
   let instances: Instance[] | undefined = $state(undefined)
+
+  let placeholderInterval: ReturnType<typeof setInterval> | undefined
+
+  onDestroy(() => clearInterval(placeholderInterval))
 
   onMount(async () => {
     try {
@@ -55,10 +59,10 @@
       instances = res
 
       let placeholderIndex = 0
-      setInterval(() => {
-        if (!instances) return
+      placeholderInterval = setInterval(() => {
+        if (!instances?.length) return
         if (placeholderIndex >= instances.length) placeholderIndex = 0
-        placeholder = instances?.[placeholderIndex].baseurl
+        placeholder = instances[placeholderIndex].baseurl
         placeholderIndex++
       }, 2000)
     } catch {
