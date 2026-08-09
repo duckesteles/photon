@@ -116,7 +116,7 @@ const settingsSchema = {
   crosspostOriginalLink: { default: true },
   embeds: {
     clickToView: { default: true },
-    youtube: { default: 'invidious' as 'youtube' | 'invidious' | 'piped' },
+    youtube: { default: 'youtube' as 'youtube' | 'invidious' | 'piped' },
     invidious: { default: DEFAULT_INVIDIOUS_INSTANCE as string | undefined },
     piped: { default: undefined as string | undefined },
   },

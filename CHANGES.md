@@ -13,10 +13,14 @@ Almost none can be embedded any more: `inv.nadeko.net`, `invidious.f5.si` and
 switched embedding off, `yt.chocolatemoo53.com` sends `X-Frame-Options: DENY`,
 and `yewtu.be` answers with a browser verification page. The rest were dead.
 
-`invidious.tiekoetter.com` returns a real player, sets
-`frame-ancestors 'self' file: http: https:`, and is now the default. Also
-guarded the settings write that resilience pass missed; exceeding the storage
-quota still threw out of that effect.
+Because a single surviving instance is too thin a thread to hang playback on,
+YouTube links embed through `youtube-nocookie.com` again. Invidious remains one
+switch away in the embed settings, and its default host is now
+`invidious.tiekoetter.com`: the one instance tested that returns a real player
+and sets `frame-ancestors 'self' file: http: https:`.
+
+Also guarded the settings write that the resilience pass missed; exceeding the
+storage quota still threw out of that effect.
 
 ## 2026-08-09 — Resilience review
 
@@ -101,7 +105,7 @@ Defaults:
 
 - The default instance is now `lemmy.zip`, including the guest profile shown
   before anyone signs in.
-- YouTube links embed through Invidious by default, using `inv.nadeko.net`.
+- YouTube embeds and their host are revisited in the entry above.
 - Comments sort by Top by default.
 - `PUBLIC_LOCK_TO_INSTANCE` now defaults to `false`, so logging in and signing
   up from any instance works out of the box.
