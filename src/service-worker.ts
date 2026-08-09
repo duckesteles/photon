@@ -6,7 +6,10 @@
 import { build, files, version } from '$service-worker'
 
 const CACHE = `cache-${version}`
-const ASSETS = [...build, ...files]
+const PLATFORM_FILES = ['/_headers', '/_redirects', '/_routes.json']
+const ASSETS = [...build, ...files].filter(
+  (path) => !PLATFORM_FILES.some((file) => path.endsWith(file)),
+)
 
 self.addEventListener('install', (event) => {
   console.info('[i] Installing service worker')

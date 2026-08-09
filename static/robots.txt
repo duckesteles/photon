@@ -7,13 +7,74 @@ Disallow: /accounts/
 Disallow: /settings/
 Disallow: /messages/
 Disallow: /inbox/
+Disallow: /profile/
+Disallow: /moderation/
+Disallow: /reports/
+Disallow: /saved/
+Disallow: /create/
+Disallow: /go/
+Disallow: /theme/
 
 Disallow: /search?
 Disallow: /*?sort=
 Disallow: /*?type_=
 Disallow: /*?q=
+Disallow: /*?page=
 
 Allow: /c/*/
 Allow: /u/*/
 Allow: /post/*/
 Allow: /comment/*/
+
+Crawl-delay: 10
+
+User-Agent: GPTBot
+Disallow: /
+
+User-Agent: OAI-SearchBot
+Disallow: /
+
+User-Agent: ChatGPT-User
+Disallow: /
+
+User-Agent: ClaudeBot
+Disallow: /
+
+User-Agent: Claude-Web
+Disallow: /
+
+User-Agent: anthropic-ai
+Disallow: /
+
+User-Agent: CCBot
+Disallow: /
+
+User-Agent: Google-Extended
+Disallow: /
+
+User-Agent: Applebot-Extended
+Disallow: /
+
+User-Agent: PerplexityBot
+Disallow: /
+
+User-Agent: Bytespider
+Disallow: /
+
+User-Agent: Amazonbot
+Disallow: /
+
+User-Agent: meta-externalagent
+Disallow: /
+
+User-Agent: SemrushBot
+Disallow: /
+
+User-Agent: AhrefsBot
+Disallow: /
+
+User-Agent: MJ12bot
+Disallow: /
+
+User-Agent: DotBot
+Disallow: /

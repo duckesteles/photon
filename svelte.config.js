@@ -5,6 +5,17 @@ import staticAdapter from '@sveltejs/adapter-static'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 import bun from 'svelte-adapter-bun-next'
 
+const ssrEnabled = process.env.PUBLIC_SSR_ENABLED?.toLowerCase() == 'true'
+
+const cloudflareAdapter = ssrEnabled
+  ? cloudflare()
+  : staticAdapter({
+      pages: '.svelte-kit/cloudflare',
+      assets: '.svelte-kit/cloudflare',
+      fallback: 'index.html',
+      precompress: false,
+    })
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
@@ -32,7 +43,7 @@ const config = {
                 },
               })
             : process.env.CF_PAGES
-              ? cloudflare()
+              ? cloudflareAdapter
               : auto(),
     alias: {
       'mono-svelte': 'src/lib/ui/shared',

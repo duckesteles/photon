@@ -1,0 +1,18 @@
+/*
+  Cache-Control: no-cache
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+
+/_app/immutable/*
+  ! Cache-Control
+  Cache-Control: public, immutable, max-age=31536000
+  X-Robots-Tag: noindex
+
+/font/*
+  ! Cache-Control
+  Cache-Control: public, max-age=604800
+
+/img/*
+  ! Cache-Control
+  Cache-Control: public, max-age=604800
