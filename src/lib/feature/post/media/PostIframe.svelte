@@ -1,5 +1,9 @@
 <script lang="ts" module>
-  import { settings } from '$lib/app/settings.svelte'
+  import {
+    DEFAULT_INVIDIOUS_INSTANCE,
+    DEFAULT_PIPED_INSTANCE,
+    settings,
+  } from '$lib/app/settings.svelte'
   import Blobs from '$lib/ui/generic/Blobs.svelte'
   import {
     Icon,
@@ -10,16 +14,25 @@
   } from 'svelte-hero-icons/dist'
   import { type IframeType, optimizeImageURL } from '../helpers'
 
+  const embedHost = (value: string | undefined, fallback: string) => {
+    const host = value
+      ?.trim()
+      .replace(/^https?:\/\//, '')
+      .replace(/\/+$/, '')
+
+    return host || fallback
+  }
+
   const youtubeDomain = (place: 'youtube' | 'invidious' | 'piped') => {
     switch (place) {
       case 'youtube': {
         return 'www.youtube-nocookie.com'
       }
       case 'invidious': {
-        return settings.embeds.invidious || 'yewtu.be'
+        return embedHost(settings.embeds.invidious, DEFAULT_INVIDIOUS_INSTANCE)
       }
       case 'piped': {
-        return settings.embeds.piped || 'piped.video'
+        return embedHost(settings.embeds.piped, DEFAULT_PIPED_INSTANCE)
       }
     }
   }

@@ -1,6 +1,10 @@
 <script lang="ts">
   import { t } from '$lib/app/i18n'
-  import { settings } from '$lib/app/settings.svelte'
+  import {
+    DEFAULT_INVIDIOUS_INSTANCE,
+    DEFAULT_PIPED_INSTANCE,
+    settings,
+  } from '$lib/app/settings.svelte'
   import { DOMAIN_REGEX_FORMS } from '$lib/app/util.svelte'
   import { CommonList } from '$lib/ui/layout'
   import { Option, Select, TextInput } from 'mono-svelte'
@@ -44,6 +48,7 @@
       <TextInput
         label={$t('settings.embeds.instance.invidious')}
         pattern={DOMAIN_REGEX_FORMS}
+        placeholder={DEFAULT_INVIDIOUS_INSTANCE}
         bind:value={settings.embeds.invidious}
       />
     </Setting>
@@ -61,6 +66,7 @@
       <TextInput
         label={$t('settings.embeds.instance.piped')}
         pattern={DOMAIN_REGEX_FORMS}
+        placeholder={DEFAULT_PIPED_INSTANCE}
         bind:value={settings.embeds.piped}
       />
     </Setting>
