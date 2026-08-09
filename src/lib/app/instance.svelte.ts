@@ -12,17 +12,21 @@ class InstanceData {
 
 export const instance = new InstanceData()
 
+export const FALLBACK_INSTANCE_URL = 'lemmy.zip'
+
 export const LINKED_INSTANCE_URL =
-  (env.PUBLIC_LOCK_TO_INSTANCE ?? 'true').toLowerCase() == 'true'
+  (env.PUBLIC_LOCK_TO_INSTANCE ?? 'false').toLowerCase() == 'true'
     ? env.PUBLIC_INSTANCE_URL
     : undefined
 
 const getDefaultInstance = (): string => {
   if (browser) {
-    return env.PUBLIC_INSTANCE_URL || 'lemdro.id'
+    return env.PUBLIC_INSTANCE_URL || FALLBACK_INSTANCE_URL
   } else {
     return (
-      env.PUBLIC_INTERNAL_INSTANCE || env.PUBLIC_INSTANCE_URL || 'lemdro.id'
+      env.PUBLIC_INTERNAL_INSTANCE ||
+      env.PUBLIC_INSTANCE_URL ||
+      FALLBACK_INSTANCE_URL
     )
   }
 }
