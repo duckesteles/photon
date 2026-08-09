@@ -41,7 +41,13 @@ const PHOTON_DEFAULT = {
 }
 
 export function getDefaultColors(): ThemeColors {
-  return env.PUBLIC_THEME ? JSON.parse(env.PUBLIC_THEME) : PHOTON_DEFAULT
+  if (!env.PUBLIC_THEME) return PHOTON_DEFAULT
+
+  try {
+    return JSON.parse(env.PUBLIC_THEME)
+  } catch {
+    return PHOTON_DEFAULT
+  }
 }
 
 export function getDefaultTheme(): Theme {

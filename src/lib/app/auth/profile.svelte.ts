@@ -13,18 +13,28 @@ import { InboxService } from './inbox.svelte'
 
 function getFromStorage<T>(key: string): T | undefined {
   if (!browser) return
-  const lc = localStorage.getItem(key)
-  if (!lc) return undefined
 
-  return JSON.parse(lc)
+  try {
+    const lc = localStorage.getItem(key)
+    if (!lc) return undefined
+
+    return JSON.parse(lc)
+  } catch {
+    return undefined
+  }
 }
 
 function setFromStorage<T>(key: string, item: T, stringify: boolean = true) {
   if (!browser) return
-  return localStorage.setItem(
-    key,
-    stringify ? JSON.stringify(item) : (item as string),
-  )
+
+  try {
+    return localStorage.setItem(
+      key,
+      stringify ? JSON.stringify(item) : (item as string),
+    )
+  } catch {
+    /* empty */
+  }
 }
 
 export interface ProfileInfo {
@@ -371,6 +381,7 @@ async function fetchUserContext(
       return r
     })
     .catch((e) => {
+      clearTimeout(timer)
       toast({ content: `Failed to contact the instance. ${e}` })
     })
 

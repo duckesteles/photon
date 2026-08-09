@@ -72,13 +72,17 @@ $effect.root(() => {
   $effect(() => {
     if (browser) {
       const filteredThemes = theme.data.themes.filter((t) => t.id > 0)
-      localStorage.setItem(
-        'theme.data',
-        JSON.stringify({
-          ...theme.data,
-          themes: filteredThemes,
-        }),
-      )
+      try {
+        localStorage.setItem(
+          'theme.data',
+          JSON.stringify({
+            ...theme.data,
+            themes: filteredThemes,
+          }),
+        )
+      } catch {
+        /* empty */
+      }
     }
   })
   $effect(() => {
@@ -177,14 +181,20 @@ export const inDarkColorScheme = (): boolean => {
 
 function loadTheme() {
   if (!browser) return
-  const localTheme = localStorage.getItem('theme.data')
 
-  if (localTheme) {
+  try {
+    const localTheme = localStorage.getItem('theme.data')
+    if (!localTheme) return
+
     const data = JSON.parse(localTheme)
-    if (!data) return
-    data.themes = [...presets, ...data.themes]
-    return data
-  }
+    if (!data || typeof data != 'object') return
 
-  return
+    data.themes = [
+      ...presets,
+      ...(Array.isArray(data.themes) ? data.themes : []),
+    ]
+    return data
+  } catch {
+    return
+  }
 }

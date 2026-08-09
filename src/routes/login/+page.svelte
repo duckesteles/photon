@@ -108,11 +108,17 @@
         throw new Error('Invalid credentials')
       }
     } catch (error) {
+      let code: string | undefined
+      try {
+        const body = (error as { body?: { message?: string } })?.body?.message
+        code = body ? JSON.parse(body)?.error : undefined
+      } catch {
+        code = undefined
+      }
+
       pushError({
         message:
-          // @ts-expect-error cursed json hack
-          JSON.parse((error as object)?.body?.message ?? '{}')?.error ==
-          'incorrect_login'
+          code == 'incorrect_login'
             ? errorMessage(
                 'incorrect_login' +
                   (form.attempts == 0 || form.attempts >= 12

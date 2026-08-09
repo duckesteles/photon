@@ -19,10 +19,15 @@ export const setSessionStorage = (
   value: SessionStorage[typeof key],
 ) => {
   if (!browser) return
-  if (value == undefined) {
-    sessionStorage.removeItem(key)
-  } else {
-    sessionStorage.setItem(key, JSON.stringify(value))
+
+  try {
+    if (value == undefined) {
+      sessionStorage.removeItem(key)
+    } else {
+      sessionStorage.setItem(key, JSON.stringify(value))
+    }
+  } catch {
+    /* empty */
   }
 }
 
@@ -30,5 +35,13 @@ export const getSessionStorage = (
   key: keyof SessionStorage,
 ): SessionStorage[typeof key] => {
   if (!browser) return
-  return JSON.parse(sessionStorage.getItem(key)!)
+
+  try {
+    const value = sessionStorage.getItem(key)
+    if (!value) return
+
+    return JSON.parse(value)
+  } catch {
+    return
+  }
 }
