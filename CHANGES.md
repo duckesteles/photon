@@ -5,6 +5,41 @@ AGPL-3.0-only. Section 5(a) of the license requires modified versions to carry
 prominent notices stating that they were changed, so every deviation from
 upstream is recorded here.
 
+## 2026-08-09 — Resilience review
+
+Stored state was parsed without any guard, so a single corrupt value made the
+app unrecoverable: the parse happens while the module initialises, which means a
+blank page with no way to reach the setting that would clear it.
+
+- `theme.data` and `profileData` are now read defensively. A corrupt value falls
+  back to defaults instead of throwing, and a `theme.data` missing its `themes`
+  array no longer crashes on the spread that follows.
+- Writes to local and session storage are guarded too. Exceeding the storage
+  quota threw out of an effect rather than being ignored.
+- A malformed `PUBLIC_THEME` took the build and every page render down with it.
+  It now falls back to the default palette.
+- The login form parsed the error body as JSON inside its own catch block, so a
+  non-JSON error — a gateway timeout returning HTML, for instance — threw again
+  and the user was shown nothing at all.
+
+Lifecycle and optimistic updates:
+
+- The sign-up page started an interval to cycle instance placeholders and never
+  cleared it. In a single-page app it kept running after leaving the page, and
+  every return added another one.
+- A failed vote left the optimistic count and highlight in place, so the vote
+  looked recorded when the server had rejected it. Both post and comment votes
+  now roll back.
+- The "still loading your user data" timer was only cleared on success, so it
+  fired after a failure too, contradicting the error that had just been shown.
+
+Smaller items:
+
+- The select menu rendered option labels through `{@html}`. Labels come from
+  `innerText`, so the markup did nothing except undo escaping on any label built
+  from server data.
+- Added `rel` to the one external link that was missing it.
+
 ## 2026-08-09 — Correctness and safety review
 
 - The account settings export produced a file containing the literal text
