@@ -7,6 +7,9 @@ import { locale } from './i18n'
 export type View = 'cozy' | 'compact'
 export const SSR_ENABLED = env.PUBLIC_SSR_ENABLED?.toLowerCase() == 'true'
 
+export const DEFAULT_INVIDIOUS_INSTANCE = 'inv.nadeko.net'
+export const DEFAULT_PIPED_INSTANCE = 'piped.video'
+
 const toBool = (str: string | undefined) => {
   if (!str) return null
   return str.toLowerCase() === 'true'
@@ -62,7 +65,7 @@ const settingsSchema = {
     sort: { default: 'Active' as SortType, env: 'PUBLIC_DEFAULT_FEED_SORT' },
     feed: { default: 'Local' as ListingType, env: 'PUBLIC_DEFAULT_FEED' },
     comments: {
-      default: 'Hot' as CommentSortType,
+      default: 'Top' as CommentSortType,
       env: 'PUBLIC_DEFAULT_COMMENT_SORT',
     },
   },
@@ -113,8 +116,8 @@ const settingsSchema = {
   crosspostOriginalLink: { default: true },
   embeds: {
     clickToView: { default: true },
-    youtube: { default: 'youtube' as 'youtube' | 'invidious' | 'piped' },
-    invidious: { default: undefined as string | undefined },
+    youtube: { default: 'invidious' as 'youtube' | 'invidious' | 'piped' },
+    invidious: { default: DEFAULT_INVIDIOUS_INSTANCE as string | undefined },
     piped: { default: undefined as string | undefined },
   },
   dock: {
