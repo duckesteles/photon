@@ -2,17 +2,9 @@
   import { getClient } from '$lib/api/client.svelte'
   import { errorMessage } from '$lib/app/error'
   import { t } from '$lib/app/i18n'
-  import { Button, Material, toast } from 'mono-svelte'
-  import {
-    ArrowDownTray,
-    ArrowUpTray,
-    Icon,
-    ServerStack,
-  } from 'svelte-hero-icons/dist'
+  import { Button, Label, Material, toast } from 'mono-svelte'
+  import { ArrowDownTray, ArrowUpTray } from 'svelte-hero-icons/dist'
 
-  // A settings export lists blocked users, blocked communities and
-  // subscriptions, so it is built and consumed entirely in the browser. It is
-  // never sent anywhere except back to the user's own instance.
   const MAX_IMPORT_BYTES = 5 * 1024 * 1024
 
   let exporting = $state(false)
@@ -33,8 +25,6 @@
       link.download = `photon-settings-${new Date().toISOString().slice(0, 10)}.json`
       link.click()
 
-      // Revoking synchronously can cancel the download before the browser has
-      // read the blob, so it waits for the current task to finish first.
       const objectURL = url
       setTimeout(() => URL.revokeObjectURL(objectURL), 0)
     } catch (error) {
@@ -58,8 +48,6 @@
         )
       }
 
-      // Parsed here so a mistaken file selection fails locally rather than
-      // being uploaded to the instance.
       const parsed = JSON.parse(await file.text())
 
       await getClient().importSettings(parsed)
@@ -73,43 +61,40 @@
   }
 </script>
 
-<Material color="distinct" class="flex flex-col gap-3">
-  <div class="flex items-center gap-2 font-medium">
-    <Icon src={ServerStack} size="16" micro />
+<div class="space-y-1">
+  <Label id="account-backup">
     {$t('settings.backup.title')}
-  </div>
-  <p class="text-sm text-slate-600 dark:text-zinc-400">
+  </Label>
+  <p class="text-slate-600 dark:text-zinc-400">
     {$t('settings.backup.description')}
   </p>
-  <div class="flex flex-row gap-2 flex-wrap">
-    <Button
-      onclick={exportSettings}
-      loading={exporting}
-      disabled={exporting}
-      size="md"
-    >
-      {#snippet prefix()}
-        <Icon src={ArrowDownTray} size="16" micro />
-      {/snippet}
-      {$t('settings.export')}
-    </Button>
-    <Button
-      onclick={() => fileInput?.click()}
-      loading={importing}
-      disabled={importing}
-      size="md"
-    >
-      {#snippet prefix()}
-        <Icon src={ArrowUpTray} size="16" micro />
-      {/snippet}
-      {$t('settings.import')}
-    </Button>
-  </div>
-  <input
-    bind:this={fileInput}
-    onchange={importSettings}
-    type="file"
-    accept="application/json,.json"
-    class="hidden"
-  />
-</Material>
+  <Material rounding="xl" color="uniform" class="dark:bg-zinc-950">
+    <div class="flex flex-row gap-2 flex-wrap">
+      <Button
+        onclick={exportSettings}
+        loading={exporting}
+        disabled={exporting}
+        icon={ArrowDownTray}
+        size="md"
+      >
+        {$t('settings.export')}
+      </Button>
+      <Button
+        onclick={() => fileInput?.click()}
+        loading={importing}
+        disabled={importing}
+        icon={ArrowUpTray}
+        size="md"
+      >
+        {$t('settings.import')}
+      </Button>
+    </div>
+    <input
+      bind:this={fileInput}
+      onchange={importSettings}
+      type="file"
+      accept="application/json,.json"
+      class="hidden"
+    />
+  </Material>
+</div>

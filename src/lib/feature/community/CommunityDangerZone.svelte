@@ -5,8 +5,7 @@
   import { profile } from '$lib/app/auth'
   import { errorMessage } from '$lib/app/error'
   import { t } from '$lib/app/i18n'
-  import { Button, Material, Modal, TextInput, toast } from 'mono-svelte'
-  import { ExclamationTriangle, Icon } from 'svelte-hero-icons/dist'
+  import { Button, Label, Material, Modal, TextInput, toast } from 'mono-svelte'
 
   interface Props {
     community: Community
@@ -16,8 +15,6 @@
 
   type Action = 'delete' | 'remove' | 'hide'
 
-  // Each of these changes state the user cannot undo from this screen, so none
-  // of them fire straight from a button.
   let pending = $state<Action | undefined>(undefined)
   let modalOpen = $state(false)
   let reason = $state('')
@@ -48,24 +45,29 @@
 
     try {
       if (pending == 'delete') {
-        await getClient().deleteCommunity({
+        const deleted = !community.deleted
+        const res = await getClient().deleteCommunity({
           community_id: community.id,
-          deleted: !community.deleted,
+          deleted: deleted,
         })
-        modalOpen = false
-        await goto('/communities')
-        return
-      }
+        community.deleted = res.community_view.community.deleted
 
-      // The labels below read from these flags, so they have to reflect the new
-      // state or the buttons keep offering what was just done.
-      if (pending == 'remove') {
+        modalOpen = false
+        pending = undefined
+        if (deleted) {
+          await goto('/communities')
+          return
+        }
+      } else if (pending == 'remove') {
         const res = await getClient().removeCommunity({
           community_id: community.id,
           removed: !community.removed,
           reason: reason || undefined,
         })
         community.removed = res.community_view.community.removed
+
+        modalOpen = false
+        pending = undefined
       } else {
         const hidden = !community.hidden
         await getClient().hideCommunity({
@@ -74,11 +76,12 @@
           reason: reason || undefined,
         })
         community.hidden = hidden
+
+        modalOpen = false
+        pending = undefined
       }
 
       toast({ content: $t('toast.updatedCommunity'), type: 'success' })
-      modalOpen = false
-      pending = undefined
     } catch (error) {
       toast({ content: errorMessage(error as string), type: 'error' })
     } finally {
@@ -87,27 +90,29 @@
   }
 </script>
 
-<Material color="distinct" class="flex flex-col gap-3">
-  <div
-    class="flex items-center gap-2 font-medium text-red-600 dark:text-red-400"
-  >
-    <Icon src={ExclamationTriangle} size="16" micro />
+<div class="space-y-1">
+  <Label id="community-danger-zone">
     {$t('moderation.danger.title')}
-  </div>
-  <div class="flex flex-row gap-2 flex-wrap">
-    <Button color="danger-subtle" size="md" onclick={() => ask('delete')}>
-      {label('delete')}
-    </Button>
-    {#if profile.isAdmin}
-      <Button color="danger-subtle" size="md" onclick={() => ask('remove')}>
-        {label('remove')}
+  </Label>
+  <p class="text-slate-600 dark:text-zinc-400">
+    {$t('moderation.danger.description')}
+  </p>
+  <Material rounding="xl" color="uniform" class="dark:bg-zinc-950">
+    <div class="flex flex-row gap-2 flex-wrap">
+      <Button color="danger-subtle" size="md" onclick={() => ask('delete')}>
+        {label('delete')}
       </Button>
-      <Button color="danger-subtle" size="md" onclick={() => ask('hide')}>
-        {label('hide')}
-      </Button>
-    {/if}
-  </div>
-</Material>
+      {#if profile.isAdmin}
+        <Button color="danger-subtle" size="md" onclick={() => ask('remove')}>
+          {label('remove')}
+        </Button>
+        <Button color="danger-subtle" size="md" onclick={() => ask('hide')}>
+          {label('hide')}
+        </Button>
+      {/if}
+    </div>
+  </Material>
+</div>
 
 {#if pending}
   <Modal
@@ -121,7 +126,7 @@
     {#if pending != 'delete'}
       <TextInput bind:value={reason} label={$t('moderation.reason')} />
     {/if}
-    <div class="flex flex-row gap-2">
+    <div class="flex flex-row gap-2 items-center">
       <Button size="lg" class="flex-1" onclick={() => (modalOpen = false)}>
         {$t('common.cancel')}
       </Button>

@@ -157,9 +157,9 @@
           </div>
         {/if}
       </Material>
-
-      <SettingsBackup />
     </div>
+
+    <SettingsBackup />
 
     <Button
       submit

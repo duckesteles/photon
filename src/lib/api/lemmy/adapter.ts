@@ -43,8 +43,6 @@ export function createLemmyClient(
       } as any)
     },
 
-    // the client names this one after its route rather than in camel case, so
-    // the proxy below cannot resolve it on its own
     async donationDialogShown() {
       return await (client as any).donation_dialog_shown()
     },

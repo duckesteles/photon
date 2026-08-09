@@ -53,8 +53,6 @@
     }
   }
 
-  // Resigning cannot be reversed by the person doing it, so it asks twice the
-  // same way removing another admin does.
   async function leaveAdmin(confirm: boolean): Promise<void | number> {
     if (!confirm)
       return toast({
@@ -84,14 +82,16 @@
 <Header pageHeader>
   {$t('routes.admin.team.title')}
   {#snippet extended()}
-    <Button
-      color="danger-subtle"
-      size="md"
-      icon={ArrowRightStartOnRectangle}
-      onclick={() => leaveAdmin(false)}
-    >
-      {$t('routes.admin.team.leave.action')}
-    </Button>
+    <div class="flex items-center gap-2 flex-wrap tracking-normal">
+      <Button
+        color="danger-subtle"
+        size="md"
+        icon={ArrowRightStartOnRectangle}
+        onclick={() => leaveAdmin(false)}
+      >
+        {$t('routes.admin.team.leave.action')}
+      </Button>
+    </div>
   {/snippet}
 </Header>
 {#if data.site}

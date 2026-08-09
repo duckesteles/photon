@@ -69,16 +69,13 @@
       application.admin = profile.current.user!.local_user_view.person
       application.registration_application.deny_reason = denyReason
 
-      // The patch above is a guess at what the server did. Read the reviewed
-      // application back so the row reflects what was actually stored, but keep
-      // the guess if that request fails rather than showing nothing.
       try {
         const reviewed = await client().getRegistrationApplication({
           person_id: application.creator.id,
         })
         application = reviewed.registration_application
       } catch {
-        /* the optimistic update above still stands */
+        /* empty */
       }
 
       profile.inbox.notifications.applications -= 1

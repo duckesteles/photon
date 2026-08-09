@@ -175,7 +175,8 @@
                 "totp": "TOTP",
                 "2fa": "2FA",
                 "paste": "Paste this in your authenticator app.",
-                "disabled": "2FA is disabled"
+                "disabled": "2FA is disabled",
+                "enabled": "2FA is enabled"
             },
             "deleteAccount": {
                 "deleteContent": "Delete content",
@@ -700,6 +701,7 @@
         },
         "danger": {
             "title": "Danger zone",
+            "description": "These actions change this community for everyone, and you may not be able to undo them yourself.",
             "delete": "Delete community",
             "hide": "Hide community",
             "unhide": "Unhide community",
@@ -942,6 +944,10 @@
                 "title": "Mark crossposts",
                 "description": "Insert 'crossposted from' and a link when crossposting."
             },
+            "showKarma": {
+                "title": "Show karma on profiles",
+                "description": "Lemmy no longer reports karma, so Photon adds up the scores of a user's posts and comments. This costs extra requests to their server when you open a profile."
+            },
             "hideSubmissions": {
                 "title": "Hide submissions",
                 "description": "Hide certain types of submissions.",
@@ -1062,7 +1068,8 @@
     },
     "stats": {
         "joined": "Joined",
-        "created": "Created"
+        "created": "Created",
+        "karma": "Karma"
     },
     "placeholders": {
         "title": "Add a post title",

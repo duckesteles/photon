@@ -156,19 +156,13 @@ export class Profile {
           })
 
           this.client.donationDialogShown().catch(() => {
-            /* marking the dialog as seen is not worth interrupting the user */
+            /* empty */
           })
         }
       }
     }, delay)
   }
 
-  /**
-   * A site response without user data means either an expired login or an
-   * instance in trouble, and the two call for different reactions. The token is
-   * only checked on that failure path, so the common case costs no extra
-   * request.
-   */
   private async reportMissingUserData() {
     let authValid = false
     try {
@@ -255,12 +249,6 @@ export class Profile {
     }
   }
 
-  /**
-   * Ends the session on the instance before dropping it locally. Removing the
-   * profile on its own leaves the token usable by anyone holding it, so a
-   * failure here is reported rather than swallowed. The local profile is
-   * removed either way, because that is what the user asked for.
-   */
   async logout(id: number) {
     const target = this.meta.profiles.find((p) => p.id == id)
 

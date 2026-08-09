@@ -13,8 +13,6 @@
   let emojis = $state<CustomEmojiView[]>(site.data?.custom_emojis ?? [])
 
   let form = $state({
-    // Set when an existing emoji is being edited; the shortcode is immutable
-    // once created, so it is only sent on the create path.
     id: undefined as number | undefined,
     shortcode: '',
     image_url: '',
@@ -117,8 +115,6 @@
           class="flex items-center gap-2 min-w-0 text-left"
           onclick={() => edit(emoji)}
         >
-          <!-- Routed through the same helper as every other image so that a
-               configured image proxy is honoured here too. -->
           <img
             src={optimizeImageURL(emoji.custom_emoji.image_url, 64)}
             alt={emoji.custom_emoji.alt_text}
@@ -149,7 +145,7 @@
   </CommonList>
 {/if}
 
-<Material color="distinct" class="mt-auto">
+<Material color="uniform" rounding="xl" class="mt-auto dark:bg-zinc-950">
   <form class="flex flex-col gap-3" onsubmit={save}>
     <TextInput
       bind:value={form.shortcode}
