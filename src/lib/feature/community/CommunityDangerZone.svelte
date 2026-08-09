@@ -90,29 +90,31 @@
   }
 </script>
 
-<div class="space-y-1">
-  <Label id="community-danger-zone">
-    {$t('moderation.danger.title')}
-  </Label>
-  <p class="text-slate-600 dark:text-zinc-400">
-    {$t('moderation.danger.description')}
-  </p>
-  <Material rounding="xl" color="uniform" class="dark:bg-zinc-950">
-    <div class="flex flex-row gap-2 flex-wrap">
-      <Button color="danger-subtle" size="md" onclick={() => ask('delete')}>
-        {label('delete')}
-      </Button>
-      {#if profile.isAdmin}
-        <Button color="danger-subtle" size="md" onclick={() => ask('remove')}>
-          {label('remove')}
+{#if profile.isMod(community)}
+  <div class="space-y-1">
+    <Label id="community-danger-zone">
+      {$t('moderation.danger.title')}
+    </Label>
+    <p class="text-slate-600 dark:text-zinc-400">
+      {$t('moderation.danger.description')}
+    </p>
+    <Material rounding="xl" color="uniform" class="dark:bg-zinc-950">
+      <div class="flex flex-row gap-2 flex-wrap">
+        <Button color="danger-subtle" size="md" onclick={() => ask('delete')}>
+          {label('delete')}
         </Button>
-        <Button color="danger-subtle" size="md" onclick={() => ask('hide')}>
-          {label('hide')}
-        </Button>
-      {/if}
-    </div>
-  </Material>
-</div>
+        {#if profile.isAdmin}
+          <Button color="danger-subtle" size="md" onclick={() => ask('remove')}>
+            {label('remove')}
+          </Button>
+          <Button color="danger-subtle" size="md" onclick={() => ask('hide')}>
+            {label('hide')}
+          </Button>
+        {/if}
+      </div>
+    </Material>
+  </div>
+{/if}
 
 {#if pending}
   <Modal
