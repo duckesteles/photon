@@ -6,6 +6,7 @@
   import {
     Bars3,
     BookOpen,
+    ChartBar,
     CubeTransparent,
     ExclamationTriangle,
     Eye,
@@ -48,6 +49,12 @@
     bind:checked={settings.crosspostOriginalLink}
     title={$t('settings.lemmy.crosspostMarker.title')}
     description={$t('settings.lemmy.crosspostMarker.description')}
+  />
+  <ToggleSetting
+    icon={ChartBar}
+    bind:checked={settings.showKarma}
+    title={$t('settings.lemmy.showKarma.title')}
+    description={$t('settings.lemmy.showKarma.description')}
   />
   <Setting icon={EyeSlash}>
     {#snippet title()}

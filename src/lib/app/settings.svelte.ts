@@ -81,6 +81,7 @@ const settingsSchema = {
     accounts: { default: true },
   },
   displayNames: { default: true, env: 'PUBLIC_DISPLAY_NAMES' },
+  showKarma: { default: true, env: 'PUBLIC_SHOW_KARMA' },
   nsfwBlur: { default: true, env: 'PUBLIC_NSFW_BLUR' },
   moderation: {
     presets: {

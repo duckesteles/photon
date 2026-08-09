@@ -128,6 +128,7 @@
             <LabelStat
               label={stat.name}
               content={stat.value}
+              formatted={stat.format ?? true}
               labelClass="text-sm"
               contentClass="text-lg"
             />

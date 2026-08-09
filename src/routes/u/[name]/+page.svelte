@@ -1,12 +1,15 @@
 <script lang="ts">
   import { page } from '$app/state'
   import { t } from '$lib/app/i18n'
+  import { instance } from '$lib/app/instance.svelte'
+  import { settings } from '$lib/app/settings.svelte'
   import { communityLink } from '$lib/app/util.svelte'
   import CommentItem from '$lib/feature/comment/CommentItem.svelte'
   import Sort from '$lib/feature/filter/Sort.svelte'
   import { isCommentView } from '$lib/feature/legacy/item'
   import { PostItem } from '$lib/feature/post'
   import UserLink from '$lib/feature/user/UserLink.svelte'
+  import { fetchKarma, type Karma } from '$lib/feature/user/karma.svelte'
   import EntityHeader from '$lib/ui/generic/EntityHeader.svelte'
   import ItemList from '$lib/ui/generic/ItemList.svelte'
   import Placeholder from '$lib/ui/info/Placeholder.svelte'
@@ -30,6 +33,64 @@
   let { data, inline = false }: Props = $props()
 
   let sortForm = $state<HTMLFormElement>()
+
+  let karma = $state<Karma | undefined>(undefined)
+  let karmaLoading = $state(false)
+
+  const karmaUsername = $derived.by(() => {
+    const person = data.person_view.value.person
+
+    try {
+      return `${person.name}@${new URL(person.actor_id).hostname}`
+    } catch {
+      return person.name
+    }
+  })
+
+  $effect(() => {
+    const username = karmaUsername
+    const instanceURL = instance.data
+
+    if (!settings.showKarma || !username) return
+
+    let cancelled = false
+
+    karma = undefined
+    karmaLoading = true
+
+    fetchKarma(instanceURL, username)
+      .then((res) => {
+        if (!cancelled) karma = res
+      })
+      .catch(() => {
+        /* empty */
+      })
+      .finally(() => {
+        if (!cancelled) karmaLoading = false
+      })
+
+    return () => {
+      cancelled = true
+    }
+  })
+
+  const karmaStat = $derived.by(() => {
+    if (!settings.showKarma) return []
+
+    return [
+      {
+        name: $t('stats.karma'),
+        value: karma
+          ? karma.partial
+            ? `${karma.total}+`
+            : karma.total
+          : karmaLoading
+            ? '…'
+            : '—',
+        format: karma != undefined && !karma.partial,
+      },
+    ]
+  })
 </script>
 
 <svelte:head>
@@ -56,6 +117,7 @@
               name: $t('content.comments'),
               value: data.person_view.value.counts.comment_count.toString(),
             },
+            ...karmaStat,
             {
               name: $t('stats.joined'),
               value: formatRelativeDate(
