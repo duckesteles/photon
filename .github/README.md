@@ -153,13 +153,10 @@ Want your instance added here? Make a GitHub issue or make a PR. (this is for ge
 
 [phtn.app](https://phtn.app) is the official instance and will get updates instantly.
 
-| Instance                                               | Location     | Contact                                                   |
-| ------------------------------------------------------ | ------------ | --------------------------------------------------------- |
-| [phtn.app (Official)](https://phtn.app)                | 🇺🇸 US West   | [photon@xylight.dev](mailto:photon@xylight.dev)           |
-| [ph.opnxng.com](https://ph.opnxng.com)                 | 🇸🇬 Singapore | [about.opnxng.com](https://about.opnxng.com)              |
-| [p.darrennathanael.com](https://p.darrennathanael.com) | 🇮🇩 ID West   | [noc@darrennathanael.com](mailto:noc@darrennathanael.com) |
-| [p.lemmy.ohaa.xyz](https://p.lemmy.ohaa.xyz)           | 🇦🇹 Austria   | (???)                                                     |
-| [phtn.ngn.tf](https://phtn.ngn.tf)                     | 🇹🇷 Turkey    | [ngn@ngn.tf](mailto:ngn@ngn.tf)                           |
+| Instance                                    | Location   | Contact                                         |
+| ------------------------------------------- | ---------- | ----------------------------------------------- |
+| [phtn.app (Official)](https://phtn.app)     | 🇺🇸 US West | [photon@xylight.dev](mailto:photon@xylight.dev) |
+| [ph.end.dedyn.io (Fork)](https://ph.end.dedyn.io) | 🌐 Global  | [duckesteles](https://github.com/duckesteles)   |
 
 ## Donate
 
