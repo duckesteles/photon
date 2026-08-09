@@ -31,6 +31,8 @@ Defaults:
 
 - The default instance is now `lemmy.zip`, including the guest profile shown
   before anyone signs in.
+- YouTube links embed through Invidious by default, using `inv.nadeko.net`.
+- Comments sort by Top by default.
 - `PUBLIC_LOCK_TO_INSTANCE` now defaults to `false`, so logging in and signing
   up from any instance works out of the box.
 - `PUBLIC_COLORSCHEME` now defaults to `dark`.
@@ -64,6 +66,12 @@ Interface fixes to earlier fork work:
   formatting opt-out that call sites were already using had no effect.
 - Added the missing `form.profile.2fa.enabled` string, which rendered as a raw
   key on the 2FA page whenever 2FA was on.
+- The embed host setting was pasted straight into `https://<host>/embed/...`,
+  so an address entered with its scheme produced an unusable URL. The scheme
+  and any trailing slashes are now stripped.
+- Moved the login expiry, missing user data and failed logout messages into the
+  translation file. They were the only English strings left in the sign-in
+  flow.
 
 ## 2026-08-04 — Lemmy API coverage
 
