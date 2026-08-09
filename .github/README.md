@@ -1,4 +1,3 @@
-
 <picture>
     <source media="(prefers-color-scheme: dark)" srcset="screenshots/compact-dark.png">
     <img alt="Photon front page, compact layout" src="screenshots/compact-light.png" width="100%">
@@ -105,12 +104,16 @@ Photon lets you configure the default client settings and more.
 
 If you're hosting Photon for a Lemmy instance, you'll almost definitely want to set these:
 
-- `PUBLIC_INSTANCE_URL` `string`: The domain which **the browser** will send API requests to.
+- `PUBLIC_INSTANCE_URL` `string` (default: `lemmy.zip`): The domain which **the browser** will send API requests to.
   - Example: `PUBLIC_INSTANCE_URL=fedi.phtn.app`
 
 - `PUBLIC_INSTANCE_TYPE` `lemmyv3 | piefedalpha` (default: `lemmyv3`): If your instance is running PieFed, you must set this option to `piefedalpha`. Otherwise, you don't need to do anything.
 
-- `PUBLIC_SSR_ENABLED` `boolean`: When enabled, will **make page requests be rendered server side first**, which allows search engine indexing, and basic non-js usage.
+- `PUBLIC_SSR_ENABLED` `boolean` (default: `false`): When enabled, will **make page requests be rendered server side first**, which allows search engine indexing, and basic non-js usage. On Cloudflare Pages this also decides how the app is built: left off, the build is fully static and serves no Functions requests; turned on, the Cloudflare adapter is used and every page request becomes a Functions invocation.
+
+- `PUBLIC_LOCK_TO_INSTANCE` `boolean` (default: `false`): Restricts logging in and signing up to `PUBLIC_INSTANCE_URL`. Left off, users can reach any instance.
+
+- `PUBLIC_COLORSCHEME` `system | light | dark` (default: `dark`): The color scheme new visitors get before they pick one themselves.
 
 - `PUBLIC_INTERNAL_INSTANCE` `string`: Only relevant if `PUBLIC_SSR_ENABLED=true`. This is the domain that the **server will make API requests to.**
 
@@ -133,7 +136,7 @@ Photon has extensive user configuration options, and you can set the defaults fo
 > Photon is constantly updated with fixes and improvements, and using heavily outdated versions can tarnish the reputation! So please keep it mostly up to date :)
 
 > [!TIP]
-> If you'd like to let users pick any instance they want, set the environment variable `PUBLIC_LOCK_TO_INSTANCE=false`.
+> If you'd like to restrict users to `PUBLIC_INSTANCE_URL`, set the environment variable `PUBLIC_LOCK_TO_INSTANCE=true`.
 
 > [!TIP]
 > Photon supports nearly everything lemmy-ui does, so you can use it as a drop-in replacement as the primary frontend.
@@ -163,4 +166,3 @@ Want your instance added here? Make a GitHub issue or make a PR. (this is for ge
 I've put my best effort into developing and maintaining this open source app. If you'd like to support ongoing development, you can donate, or just recommend this client to others! [Buy me a Coffee](https://buymeacoffee.com/xylight)
 
 <a href="https://www.buymeacoffee.com/xylight"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=xylight&button_colour=FFDD00&font_colour=000000&font_family=Poppins&outline_colour=000000&coffee_colour=ffffff" /></a>
-

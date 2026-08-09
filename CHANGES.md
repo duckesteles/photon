@@ -5,6 +5,66 @@ AGPL-3.0-only. Section 5(a) of the license requires modified versions to carry
 prominent notices stating that they were changed, so every deviation from
 upstream is recorded here.
 
+## 2026-08-09 — Deployment cost, defaults and karma
+
+Cloudflare Pages was burning through its daily Functions quota (150k against a
+100k limit) while nobody was using the site. Every page request was reaching a
+Function: the Cloudflare adapter routes `/*` through the worker, and none of the
+pages were prerendered, so bot traffic alone was enough to exhaust the quota.
+
+- On Cloudflare Pages, Photon now builds as a static single-page app unless
+  `PUBLIC_SSR_ENABLED=true`. Output still lands in `.svelte-kit/cloudflare`, so
+  no project setting has to change, but the deployment contains no `_worker.js`
+  and no `_routes.json` and therefore serves no Functions requests. Server-side
+  rendering was already off by default, so nothing was lost by prerendering the
+  shell instead of generating it per request.
+- Added a `_headers` file so immutable assets, fonts and images are cached for a
+  long time while the app shell stays revalidated.
+- Excluded `_headers`, `_redirects` and `_routes.json` from the service worker
+  precache list. Cloudflare consumes those files instead of serving them, so
+  `cache.addAll` would have rejected and no service worker would install.
+- Tightened `robots.txt`: added the remaining account-scoped routes, a crawl
+  delay, and opt-outs for the AI and SEO crawlers that generate most of the
+  automated traffic.
+
+Defaults:
+
+- The default instance is now `lemmy.zip`, including the guest profile shown
+  before anyone signs in.
+- `PUBLIC_LOCK_TO_INSTANCE` now defaults to `false`, so logging in and signing
+  up from any instance works out of the box.
+- `PUBLIC_COLORSCHEME` now defaults to `dark`.
+
+User profiles:
+
+- Profiles show a Reddit-style karma figure, the sum of the scores of a user's
+  posts and comments. Lemmy dropped `post_score` and `comment_score` from
+  `PersonAggregates` in 0.19, so the figure is computed in the browser by
+  paging through the user's submissions, capped at 20 pages and cached for the
+  session. A user with more submissions than the cap is shown a `+` suffix.
+  Turn it off with the "Show karma on profiles" setting or
+  `PUBLIC_SHOW_KARMA=false`.
+
+Interface fixes to earlier fork work:
+
+- The account backup section sat inside the discussion-languages block on the
+  profile settings page, so it rendered as part of that control. It is now its
+  own section and follows the label/description/panel shape the rest of that
+  page uses.
+- The backup, danger zone and emoji panels used `Material color="distinct"`,
+  which is reserved for popovers and overlays, and mixed `prefix` snippets with
+  the `icon` prop. They now use the same `uniform` panels and `icon` prop as the
+  rest of the app.
+- The "Resign as admin" button was placed directly in the page header's
+  `extended` snippet, which stretches its children, so it rendered full width.
+  It is now wrapped the same way every other header action is.
+- Restoring a deleted community no longer redirects away from its settings, and
+  the delete action now reflects the state the server reported back.
+- `EntityHeader` never passed its `stats.format` flag to `LabelStat`, so the
+  formatting opt-out that call sites were already using had no effect.
+- Added the missing `form.profile.2fa.enabled` string, which rendered as a raw
+  key on the 2FA page whenever 2FA was on.
+
 ## 2026-08-04 — Lemmy API coverage
 
 Audited Photon against the route definitions of Lemmy 0.19.20 and closed the
