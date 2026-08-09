@@ -52,6 +52,7 @@ function writeCache(key: string, karma: Karma) {
 export async function fetchKarma(
   instance: string,
   username: string,
+  signal?: AbortSignal,
 ): Promise<Karma> {
   const key = cacheKey(instance, username)
   const cached = readCache(key)
@@ -62,7 +63,10 @@ export async function fetchKarma(
   let exhausted = false
 
   for (let page = 1; page <= MAX_PAGES; page++) {
-    const res = await client({ instanceURL: instance }).getPersonDetails({
+    const res = await client({
+      instanceURL: instance,
+      func: (input, init) => fetch(input, { ...init, signal }),
+    }).getPersonDetails({
       username: username,
       page: page,
       limit: PAGE_SIZE,

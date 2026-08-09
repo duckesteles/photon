@@ -53,24 +53,24 @@
 
     if (!settings.showKarma || !username) return
 
-    let cancelled = false
+    const controller = new AbortController()
 
     karma = undefined
     karmaLoading = true
 
-    fetchKarma(instanceURL, username)
+    fetchKarma(instanceURL, username, controller.signal)
       .then((res) => {
-        if (!cancelled) karma = res
+        if (!controller.signal.aborted) karma = res
       })
       .catch(() => {
         /* empty */
       })
       .finally(() => {
-        if (!cancelled) karmaLoading = false
+        if (!controller.signal.aborted) karmaLoading = false
       })
 
     return () => {
-      cancelled = true
+      controller.abort()
     }
   })
 
