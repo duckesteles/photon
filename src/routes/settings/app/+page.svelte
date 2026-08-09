@@ -84,6 +84,7 @@
         class="bg-linear-to-r ml-6 dark:from-pink-400 dark:to-fuchsia-400 from-pink-600 to-red-600 text-white dark:text-black"
         href="https://buymeacoffee.com/xylight"
         target="_blank"
+        rel="noopener noreferrer"
         rounding="xl"
         icon={Heart}
       >
