@@ -63,7 +63,10 @@
         "moveUp": "Move up",
         "moveDown": "Move down",
         "guest": "Guest",
-        "piefedGate": "Piefed support is experimental. Some features are not supported."
+        "piefedGate": "Piefed support is experimental. Some features are not supported.",
+        "sessionExpired": "Your login has expired or was revoked. Sign in again to continue.",
+        "userDataMissing": "Your login is still valid, but the instance did not return your user data. It is likely having trouble.",
+        "logoutFailed": "Could not end the session on the instance, so the login may still be valid there. Revoke it from your account settings if this was not your own device."
     },
     "filter": {
         "location": {

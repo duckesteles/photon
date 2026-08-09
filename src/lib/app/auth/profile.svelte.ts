@@ -177,9 +177,9 @@ export class Profile {
     }
 
     toast({
-      content: authValid
-        ? 'Your login is still valid, but the instance did not return your user data. It is likely having trouble.'
-        : 'Your login has expired or was revoked. Sign in again to continue.',
+      content: t.get(
+        authValid ? 'account.userDataMissing' : 'account.sessionExpired',
+      ),
       type: 'error',
       long: true,
     })
@@ -266,8 +266,7 @@ export class Profile {
         }).logout()
       } catch {
         toast({
-          content:
-            'Could not end the session on the instance, so the login may still be valid there. Revoke it from your account settings if this was not your own device.',
+          content: t.get('account.logoutFailed'),
           type: 'warning',
           long: true,
         })
