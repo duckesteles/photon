@@ -17,11 +17,21 @@
     }
   }
 
+  const SAFE_PROTOCOLS = ['http:', 'https:', 'mailto:', 'magnet:']
+
+  const safeHref = (value: string): string | undefined => {
+    const parsed = parseURL(value)
+    if (!parsed) return value
+
+    return SAFE_PROTOCOLS.includes(parsed.protocol) ? value : undefined
+  }
+
   let photonified = $derived(photonify(href))
+  let resolved = $derived(photonified ?? safeHref(href))
 </script>
 
 <a
-  href={photonified ?? href}
+  href={resolved}
   {title}
   class="hover:underline text-blue-600 dark:text-blue-400"
 >
