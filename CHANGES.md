@@ -5,6 +5,28 @@ AGPL-3.0-only. Section 5(a) of the license requires modified versions to carry
 prominent notices stating that they were changed, so every deviation from
 upstream is recorded here.
 
+## 2026-08-09 — Correctness and safety review
+
+- The account settings export produced a file containing the literal text
+  `[object Object]`. `exportSettings` is declared as returning a string, but the
+  Lemmy client parses every response as JSON, so the download was built from an
+  object. The declaration now says `unknown` and the caller serialises it.
+- Karma lookups could not be cancelled. Moving between profiles left up to
+  twenty requests per abandoned profile running against the instance; they are
+  now aborted when the page changes.
+- Markdown links accepted any URL scheme, so a submission could render
+  `[text](javascript:...)`. The content security policy already blocked it from
+  executing, but the link is now dropped rather than relying on that alone.
+  `http`, `https`, `mailto`, `magnet` and relative links are unaffected.
+- `/go?localize=` redirected to whatever URL it was handed when the link was not
+  fediverse content, which made the deployment usable as an open redirect for
+  phishing. It now returns a 400 instead. Photon's own share links are
+  unaffected, since those always resolve.
+- The community danger zone rendered for anyone opening a community's settings
+  page, including people with no moderator rights. The server rejected the
+  requests, but the buttons should not have been there; it is now gated on
+  moderator status.
+
 ## 2026-08-09 — Deployment cost, defaults and karma
 
 Cloudflare Pages was burning through its daily Functions quota (150k against a
