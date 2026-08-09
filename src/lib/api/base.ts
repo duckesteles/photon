@@ -272,7 +272,7 @@ export abstract class BaseClient {
   abstract voteOnPoll?(form: types.PollVote): Promise<types.PostView>
   abstract setNote?(form: types.SetNote): Promise<types.PersonView>
   abstract validateAuth(): Promise<types.SuccessResponse>
-  abstract exportSettings(): Promise<string>
+  abstract exportSettings(): Promise<unknown>
   abstract importSettings(form: unknown): Promise<types.SuccessResponse>
   abstract leaveAdmin(): Promise<types.GetSiteResponse>
   abstract transferCommunity(

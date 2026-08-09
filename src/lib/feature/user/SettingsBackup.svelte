@@ -17,7 +17,8 @@
 
     try {
       const data = await getClient().exportSettings()
-      const blob = new Blob([data], { type: 'application/json' })
+      const json = typeof data === 'string' ? data : JSON.stringify(data)
+      const blob = new Blob([json], { type: 'application/json' })
       url = URL.createObjectURL(blob)
 
       const link = document.createElement('a')
