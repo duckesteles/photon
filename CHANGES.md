@@ -5,6 +5,19 @@ AGPL-3.0-only. Section 5(a) of the license requires modified versions to carry
 prominent notices stating that they were changed, so every deviation from
 upstream is recorded here.
 
+## 2026-08-09 — Working YouTube frontend
+
+Tested every instance the Invidious project lists, plus several from outside it.
+Almost none can be embedded any more: `inv.nadeko.net`, `invidious.f5.si` and
+`inv.zoomerville.com` sit behind a bot challenge, `invidious.nerdvpn.de` has
+switched embedding off, `yt.chocolatemoo53.com` sends `X-Frame-Options: DENY`,
+and `yewtu.be` answers with a browser verification page. The rest were dead.
+
+`invidious.tiekoetter.com` returns a real player, sets
+`frame-ancestors 'self' file: http: https:`, and is now the default. Also
+guarded the settings write that resilience pass missed; exceeding the storage
+quota still threw out of that effect.
+
 ## 2026-08-09 — Resilience review
 
 Stored state was parsed without any guard, so a single corrupt value made the

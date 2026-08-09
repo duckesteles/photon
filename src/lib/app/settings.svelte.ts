@@ -7,7 +7,7 @@ import { locale } from './i18n'
 export type View = 'cozy' | 'compact'
 export const SSR_ENABLED = env.PUBLIC_SSR_ENABLED?.toLowerCase() == 'true'
 
-export const DEFAULT_INVIDIOUS_INSTANCE = 'inv.nadeko.net'
+export const DEFAULT_INVIDIOUS_INSTANCE = 'invidious.tiekoetter.com'
 export const DEFAULT_PIPED_INSTANCE = 'piped.video'
 
 const toBool = (str: string | undefined) => {
@@ -170,7 +170,11 @@ export const settings = createSettingsState(structuredClone(defaultSettings))
 
 $effect.root(() => {
   $effect(() => {
-    localStorage.setItem('settings', JSON.stringify(settings))
+    try {
+      localStorage.setItem('settings', JSON.stringify(settings))
+    } catch {
+      /* empty */
+    }
 
     if (settings.language) {
       locale.set(settings.language)
