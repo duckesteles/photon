@@ -60,6 +60,10 @@
     'top-start': 'bottom',
   }
 
+  function maybeTrapFocus(node: HTMLElement, enabled: boolean) {
+    return enabled ? trapFocus(node) : undefined
+  }
+
   const [floatingRef, floatingContent] = createFloatingActions({
     strategy: strategy,
     placement: placement,
@@ -148,7 +152,7 @@
       }}
       class={['z-150', popoverClass]}
       use:floatingContent
-      use:trapFocus
+      use:maybeTrapFocus={!manualToggle}
       bind:this={popoverEl}
     >
       {#if popover}
