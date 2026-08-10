@@ -5,6 +5,22 @@ AGPL-3.0-only. Section 5(a) of the license requires modified versions to carry
 prominent notices stating that they were changed, so every deviation from
 upstream is recorded here.
 
+## 2026-08-10 — Surviving a deployment
+
+A new build renames every code-split chunk, and the old ones are removed. A
+returning visitor whose service worker or open tab still referenced the previous
+build hit "error loading dynamically imported module" and a blank page.
+
+- The service worker now calls `skipWaiting` and `clients.claim`, so a freshly
+  deployed worker takes over at once instead of waiting behind the previous one,
+  and it already drops stale caches on activation.
+- Installation caches each asset on its own with `Promise.allSettled` instead of
+  `cache.addAll`, so a single unreachable file can no longer abort the install
+  and strand an older worker in control.
+- Version polling is on (`kit.version.pollInterval`), and a `beforeNavigate`
+  guard forces a full page load once an update is detected, so a client-side
+  navigation can never fault on a chunk that no longer exists.
+
 ## 2026-08-10 — Blocking from the blocks page
 
 The block settings pages could only remove existing blocks. Each tab now has a

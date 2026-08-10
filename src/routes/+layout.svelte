@@ -1,6 +1,7 @@
 <script lang="ts">
   import { browser } from '$app/environment'
-  import { navigating, page } from '$app/state'
+  import { beforeNavigate } from '$app/navigation'
+  import { navigating, page, updated } from '$app/state'
   import { site } from '$lib/api/client.svelte'
   import { locale } from '$lib/app/i18n'
   import { LINKED_INSTANCE_URL } from '$lib/app/instance.svelte'
@@ -32,6 +33,15 @@
   }
 
   let { children }: Props = $props()
+
+  // After a new deployment the previous build's code-split chunks are gone.
+  // When the version poll detects an update, fall back to a full page load so a
+  // client-side navigation cannot fail on an import that no longer exists.
+  beforeNavigate((navigation) => {
+    if (updated.current && navigation.to?.url && !navigation.willUnload) {
+      location.href = navigation.to.url.href
+    }
+  })
 
   nProgress.configure({
     minimum: 0.4,

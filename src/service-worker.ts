@@ -16,22 +16,25 @@ self.addEventListener('install', (event) => {
 
   async function addFilesToCache() {
     const cache = await caches.open(CACHE)
-    await cache.addAll(ASSETS)
+    // Cache each asset independently so one missing file cannot abort the whole
+    // install and leave an older worker in control.
+    await Promise.allSettled(ASSETS.map((asset) => cache.add(asset)))
   }
 
-  event.waitUntil(addFilesToCache())
+  event.waitUntil(addFilesToCache().then(() => self.skipWaiting()))
 })
 
 self.addEventListener('activate', (event) => {
   console.info('[i] Activating service worker')
 
-  async function deleteOldCaches() {
+  async function takeOver() {
     for (const key of await caches.keys()) {
       if (key !== CACHE) await caches.delete(key)
     }
+    await self.clients.claim()
   }
 
-  event.waitUntil(deleteOldCaches())
+  event.waitUntil(takeOver())
 })
 
 self.addEventListener('fetch', (e) => {

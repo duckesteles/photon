@@ -60,6 +60,9 @@ const config = {
         'report-uri': ['/'],
       },
     },
+    version: {
+      pollInterval: 60000,
+    },
   },
 }
 
