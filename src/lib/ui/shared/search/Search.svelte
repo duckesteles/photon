@@ -47,6 +47,7 @@
       if (item == null) return
       selected = item
       query = extractName(item)
+      openMenu = false
       onselect?.(item)
     },
     required,
@@ -64,9 +65,20 @@
     items = await search(query)
     searching = false
   })
+
+  let container: HTMLElement | undefined = $state()
+
+  function closeOnOutside(e: MouseEvent) {
+    if (!openMenu) return
+    const target = e.target as Element | null
+    if (!target) return
+    if (container?.contains(target) || target.closest('[role="menu"]')) return
+    openMenu = false
+  }
 </script>
 
-<div class="relative">
+<svelte:window onclick={closeOnOutside} />
+<div class="relative" bind:this={container}>
   <Menu bind:open={openMenu}>
     {#snippet target(attachment)}
       {#if input}{@render input()}{:else}

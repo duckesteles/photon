@@ -92,8 +92,8 @@
       const results = (await instances) || {}
 
       return q
-        ? (results.federated_instances?.linked || []).filter(
-            (i) => i.software === 'lemmy' && i.domain.includes(q),
+        ? (results.federated_instances?.linked || []).filter((i) =>
+            i.domain.includes(q),
           )
         : []
     }}

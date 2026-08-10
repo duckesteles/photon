@@ -17,6 +17,17 @@ blocker's id (`person`) instead of the blocked user's (`target`), so it never
 matched and removed the last entry instead. Community and instance unblocks now
 roll back on failure like the votes do.
 
+Two fixes to the shared autocomplete this surfaced, which apply everywhere it is
+used:
+
+- The suggestion list only closed when the menu had been opened by a click, but
+  typing opens it directly, so it stayed on screen after clicking away or
+  picking a result. It now closes on selection and on any click outside the
+  field and the list.
+- The instance search dropped everything that was not Lemmy software, so a
+  PieFed server could never be found and blocked. It now lists any federated
+  server matching the query.
+
 ## 2026-08-09 — Working YouTube frontend
 
 Tested every instance the Invidious project lists, plus several from outside it.
