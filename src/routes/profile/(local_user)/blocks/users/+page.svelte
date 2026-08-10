@@ -12,12 +12,13 @@
 
   let { data } = $props()
 
+  let blocks = $state(data.person_blocks ?? [])
   let query = $state('')
   let blocking = $state(false)
 
   async function block(person?: Person) {
-    if (!person || !data.person_blocks) return
-    if (data.person_blocks.some((i) => i.target.id == person.id)) {
+    if (!person) return
+    if (blocks.some((i) => i.target.id == person.id)) {
       query = ''
       return
     }
@@ -29,7 +30,7 @@
     const loading = toast({ content: '', loading: true })
     try {
       await profile.client.blockPerson({ block: true, person_id: person.id })
-      data.person_blocks.push({ person: me, target: person })
+      blocks.push({ person: me, target: person })
       query = ''
       toast({ content: $t('toast.blockedUser'), type: 'success' })
     } catch (err) {
@@ -41,16 +42,15 @@
   }
 
   async function unblock(id: number) {
-    if (!data.person_blocks) return
-    const index = data.person_blocks.findIndex((i) => i.target.id == id)
+    const index = blocks.findIndex((i) => i.target.id == id)
     if (index < 0) return
 
-    const [removed] = data.person_blocks.splice(index, 1)
+    const [removed] = blocks.splice(index, 1)
     try {
       await profile.client.blockPerson({ block: false, person_id: id })
       toast({ content: $t('toast.unblockedUser'), type: 'success' })
     } catch (err) {
-      data.person_blocks.splice(index, 0, removed)
+      blocks.splice(index, 0, removed)
       toast({ content: errorMessage(err as string), type: 'error' })
     }
   }
@@ -65,9 +65,9 @@
     onselect={block}
   />
 
-  {#if data.person_blocks && data.person_blocks.length > 0}
+  {#if blocks.length > 0}
     <ItemList
-      items={data.person_blocks.map((i) => ({
+      items={blocks.map((i) => ({
         id: i.target.id,
         name: i.target.name,
         avatar: i.target.avatar,

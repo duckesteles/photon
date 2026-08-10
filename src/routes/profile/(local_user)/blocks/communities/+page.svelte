@@ -12,14 +12,13 @@
 
   let { data } = $props()
 
+  let blocks = $state(data.community_blocks ?? [])
   let query = $state('')
   let blocking = $state(false)
 
   async function block(view?: CommunityView) {
-    if (!view || !data.community_blocks) return
-    if (
-      data.community_blocks.some((i) => i.community.id == view.community.id)
-    ) {
+    if (!view) return
+    if (blocks.some((i) => i.community.id == view.community.id)) {
       query = ''
       return
     }
@@ -34,7 +33,7 @@
         block: true,
         community_id: view.community.id,
       })
-      data.community_blocks.push({ person: me, community: view.community })
+      blocks.push({ person: me, community: view.community })
       query = ''
       toast({ content: $t('toast.blockedCommunity'), type: 'success' })
     } catch (err) {
@@ -46,16 +45,15 @@
   }
 
   async function unblock(id: number) {
-    if (!data.community_blocks) return
-    const index = data.community_blocks.findIndex((i) => i.community.id == id)
+    const index = blocks.findIndex((i) => i.community.id == id)
     if (index < 0) return
 
-    const [removed] = data.community_blocks.splice(index, 1)
+    const [removed] = blocks.splice(index, 1)
     try {
       await profile.client.blockCommunity({ block: false, community_id: id })
       toast({ content: $t('toast.unblockedCommunity'), type: 'success' })
     } catch (err) {
-      data.community_blocks.splice(index, 0, removed)
+      blocks.splice(index, 0, removed)
       toast({ content: errorMessage(err as string), type: 'error' })
     }
   }
@@ -70,9 +68,9 @@
     onselect={block}
   />
 
-  {#if data.community_blocks && data.community_blocks.length > 0}
+  {#if blocks.length > 0}
     <ItemList
-      items={data.community_blocks.map((i) => ({
+      items={blocks.map((i) => ({
         id: i.community.id,
         name: i.community.title,
         avatar: i.community.icon,

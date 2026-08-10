@@ -11,12 +11,12 @@
 
   let { data } = $props()
 
+  let blocks = $state(data.my_user?.instance_blocks ?? [])
   let query = $state('')
   let blocking = $state(false)
 
   async function block(instance?: Instance) {
-    const blocks = data.my_user?.instance_blocks
-    if (!instance || !blocks) return
+    if (!instance) return
     if (blocks.some((i) => i.instance.id == instance.id)) {
       query = ''
       return
@@ -44,8 +44,6 @@
   }
 
   async function unblock(id: number) {
-    const blocks = data.my_user?.instance_blocks
-    if (!blocks) return
     const index = blocks.findIndex((i) => i.instance.id == id)
     if (index < 0) return
 
@@ -68,9 +66,9 @@
     onselect={block}
   />
 
-  {#if data.my_user?.instance_blocks && data.my_user.instance_blocks.length > 0}
+  {#if blocks.length > 0}
     <ItemList
-      items={data.my_user.instance_blocks.map((i) => ({
+      items={blocks.map((i) => ({
         id: i.instance.id,
         name: i.site?.name ?? i.instance.domain,
         avatar: i.site?.icon,
