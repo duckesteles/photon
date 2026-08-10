@@ -79,7 +79,7 @@
 
 <svelte:window onclick={closeOnOutside} />
 <div class="relative" bind:this={container}>
-  <Menu bind:open={openMenu}>
+  <Menu bind:open={openMenu} manualToggle>
     {#snippet target(attachment)}
       {#if input}{@render input()}{:else}
         <TextInput
@@ -96,6 +96,9 @@
             openMenu = true
             oninput?.(e)
             debounceFunc()
+          }}
+          onkeydown={(e) => {
+            if (e.key === 'Escape') openMenu = false
           }}
           {required}
           {...rest}

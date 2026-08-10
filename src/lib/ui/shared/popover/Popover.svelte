@@ -19,6 +19,7 @@
     openOnHover?: boolean
     open?: boolean
     autoClose?: boolean
+    manualToggle?: boolean
     placement?: Placement
     middleware?: Middleware[]
     strategy?: Strategy
@@ -32,6 +33,7 @@
     openOnHover = false,
     open = $bindable(false),
     autoClose = true,
+    manualToggle = false,
     placement = 'bottom-start',
     middleware = [offset(6), shift(), flip()],
     strategy = 'fixed',
@@ -117,17 +119,17 @@
     e.addEventListener('mouseleave', mouseleave)
     e.addEventListener('focus', focus)
     e.addEventListener('focusout', focusout)
-    e.addEventListener('click', click)
+    if (!manualToggle) e.addEventListener('click', click)
     popoverEl?.addEventListener('keydown', keydown)
 
     floatingRef(e)
 
     return () => {
-      e.addEventListener('mouseover', mouseover)
+      e.removeEventListener('mouseover', mouseover)
       e.removeEventListener('mouseleave', mouseleave)
       e.removeEventListener('focus', focus)
       e.removeEventListener('focusout', focusout)
-      e.removeEventListener('click', click)
+      if (!manualToggle) e.removeEventListener('click', click)
       popoverEl?.removeEventListener('keydown', keydown)
     }
   }

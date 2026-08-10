@@ -14,6 +14,7 @@
   interface Props {
     openOnHover?: boolean
     open?: boolean
+    manualToggle?: boolean
     placement?: Placement
     middleware?: Middleware[]
     strategy?: Strategy

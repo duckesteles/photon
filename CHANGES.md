@@ -20,10 +20,13 @@ roll back on failure like the votes do.
 Two fixes to the shared autocomplete this surfaced, which apply everywhere it is
 used:
 
-- The suggestion list only closed when the menu had been opened by a click, but
-  typing opens it directly, so it stayed on screen after clicking away or
-  picking a result. It now closes on selection and on any click outside the
-  field and the list.
+- The suggestion list would not dismiss. The popover it uses is built for
+  button triggers: it toggles on click and, when it closes, returns focus to the
+  trigger. With a text field as the trigger, that refocus fired the field's
+  focus handler, which reopened the list — so every close immediately undid
+  itself. The popover now takes a `manualToggle` option that leaves open and
+  close entirely to the field, which opens on focus or typing and closes on
+  selection, on Escape, and on a click outside itself and the list.
 - The instance search dropped everything that was not Lemmy software, so a
   PieFed server could never be found and blocked. It now lists any federated
   server matching the query.
