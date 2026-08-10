@@ -17,7 +17,7 @@
   let blocking = $state(false)
 
   async function block(view?: CommunityView) {
-    if (!view) return
+    if (blocking || !view) return
     if (blocks.some((i) => i.community.id == view.community.id)) {
       query = ''
       return
@@ -90,7 +90,6 @@
         <Button
           title={$t('common.unblock')}
           size="square-md"
-          disabled={blocking}
           onclick={() => unblock(block.id)}
           icon={Trash}
         />

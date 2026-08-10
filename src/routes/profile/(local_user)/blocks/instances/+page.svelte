@@ -16,7 +16,7 @@
   let blocking = $state(false)
 
   async function block(instance?: Instance) {
-    if (!instance) return
+    if (blocking || !instance) return
     if (blocks.some((i) => i.instance.id == instance.id)) {
       query = ''
       return
@@ -80,7 +80,6 @@
         <Button
           title={$t('common.unblock')}
           size="square-md"
-          disabled={blocking}
           onclick={() => unblock(block.id)}
           icon={Trash}
         />

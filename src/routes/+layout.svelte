@@ -65,6 +65,22 @@
       history.back()
     })
 
+    // A deploy removes the previous build's chunks. If an already-open tab tries
+    // to import one (a modal, an editor) with no navigation to trigger the
+    // guard above, reload once to pull the current build. The timestamp guard
+    // stops a reload loop when the import fails for another reason.
+    window.addEventListener('vite:preloadError', () => {
+      try {
+        const now = Date.now()
+        const last = Number(sessionStorage.getItem('preload-error-reload') ?? 0)
+        if (now - last < 10000) return
+        sessionStorage.setItem('preload-error-reload', String(now))
+      } catch {
+        /* empty */
+      }
+      location.reload()
+    })
+
     if (Capacitor.isNativePlatform()) {
       navigator.vibrate = (pattern: VibratePattern | Iterable<number>) => {
         Haptics.vibrate({
