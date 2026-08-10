@@ -255,6 +255,11 @@
             "settings": "Settings",
             "blocks": {
                 "title": "Blocked",
+                "add": {
+                    "user": "Block a user",
+                    "community": "Block a community",
+                    "instance": "Block a server"
+                },
                 "empty": {
                     "user": {
                         "title": "No blocked users",
@@ -727,6 +732,7 @@
         "debug": "Debug",
         "refresh": "Refresh",
         "jump": "Jump",
+        "unblock": "Unblock",
         "save": "Save",
         "enabled": "Enabled",
         "disabled": "Disabled",
@@ -754,6 +760,9 @@
         "unblockedCommunity": "Unblocked that community.",
         "purgedCommunity": "Purged that community.",
         "blockedInstance": "Blocked that server.",
+        "unblockedInstance": "Unblocked that server.",
+        "blockedUser": "Blocked that user.",
+        "unblockedUser": "Unblocked that user.",
         "updatedCommunity": "Your community was updated.",
         "sentMessage": "Sent that message.",
         "invalidDateAbsolute": "Invalid date. It must be an absolute date.",

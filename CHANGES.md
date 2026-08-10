@@ -5,6 +5,18 @@ AGPL-3.0-only. Section 5(a) of the license requires modified versions to carry
 prominent notices stating that they were changed, so every deviation from
 upstream is recorded here.
 
+## 2026-08-10 — Blocking from the blocks page
+
+The block settings pages could only remove existing blocks. Each tab now has a
+search field to add a block directly: users, communities and servers are looked
+up through the same autocomplete used elsewhere and blocked on selection, with a
+toast for the result and an optimistic update of the list.
+
+Fixed a bug in the user tab while there: unblocking searched the list by the
+blocker's id (`person`) instead of the blocked user's (`target`), so it never
+matched and removed the last entry instead. Community and instance unblocks now
+roll back on failure like the votes do.
+
 ## 2026-08-09 — Working YouTube frontend
 
 Tested every instance the Invidious project lists, plus several from outside it.
