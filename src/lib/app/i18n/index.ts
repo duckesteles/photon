@@ -101,6 +101,24 @@ const config: Config = {
   fallbackLocale: 'en',
 }
 
+function withoutEmpty(value: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(value)
+      .filter(([, entry]) => entry !== '')
+      .map(([key, entry]) => [
+        key,
+        entry && typeof entry == 'object' && !Array.isArray(entry)
+          ? withoutEmpty(entry as Record<string, unknown>)
+          : entry,
+      ]),
+  )
+}
+
+config.loaders = config.loaders?.map((entry) => ({
+  ...entry,
+  loader: async () => withoutEmpty(await entry.loader()),
+}))
+
 export const aliases = new Map([
   ['zh-CN', 'zh-Hans'],
   ['zh-TW', 'zh-Hant'],
