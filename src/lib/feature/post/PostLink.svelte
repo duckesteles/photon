@@ -142,18 +142,26 @@
     }
 
     .post-link-title {
-      font-weight: var(--font-weight-medium);
-      font-size: var(--text-base);
+      font-weight: var(--font-weight-semibold);
+      font-size: 1.0625rem;
+      line-height: var(--leading-snug);
       letter-spacing: var(--tracking-tight);
       max-width: calc(var(--spacing) * 108);
+      color: var(--color-slate-900);
+
+      @variant dark {
+        color: var(--color-zinc-50);
+      }
     }
 
     .post-link-body {
-      color: var(--color-slate-500);
+      color: var(--color-slate-600);
+      font-size: var(--text-sm);
+      line-height: var(--leading-relaxed);
       overflow: hidden;
       max-height: 100%;
       @variant dark {
-        color: var(--color-zinc-500);
+        color: var(--color-zinc-400);
       }
     }
 

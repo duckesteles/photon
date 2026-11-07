@@ -56,8 +56,14 @@
     onedit,
     onhide,
   }: Props = $props()
-  let buttonHeight = $derived(view == 'compact' ? 'h-7.5' : 'h-8')
-  let buttonSquare = $derived(view == 'compact' ? 'w-7.5 h-7.5' : 'w-8 h-8')
+  let buttonHeight = $derived(
+    view == 'compact' ? 'h-8 pointer-coarse:h-10' : 'h-9 pointer-coarse:h-11',
+  )
+  let buttonSquare = $derived(
+    view == 'compact'
+      ? 'w-8 h-8 pointer-coarse:w-10 pointer-coarse:h-10'
+      : 'w-9 h-9 pointer-coarse:w-11 pointer-coarse:h-11',
+  )
 
   function share(global: boolean = true, url?: string) {
     const link =
@@ -107,7 +113,7 @@
 
 <footer
   class={[
-    'flex flex-row gap-2 items-center shrink-0 text-slate-600 dark:text-zinc-400',
+    'flex flex-row gap-1 items-center shrink-0 text-slate-600 dark:text-zinc-400',
     buttonHeight,
   ]}
   class:flex-row-reverse={settings.posts.reverseActions}
@@ -124,8 +130,9 @@
   <Button
     size="custom"
     href="{postLink(post.post)}#comments"
-    class="text-inherit! h-full px-3 relative"
-    rounding="xl"
+    class="text-inherit! h-full px-3 relative font-semibold tabular-nums bg-slate-100 hover:bg-slate-200 dark:bg-zinc-800 dark:hover:bg-zinc-700"
+    rounding="pill"
+    color="none"
     target={settings.openLinksInNewTab ? '_blank' : ''}
     aria-label={$t('post.actions.comments')}
   >
@@ -151,7 +158,8 @@
       onclick={() => (debug = true)}
       title="Debug"
       size="custom"
-      rounding="xl"
+      rounding="pill"
+      color="tertiary"
       class={buttonSquare}
       icon={BugAnt}
     ></Button>
@@ -163,7 +171,8 @@
           <Button
             {@attach attachment}
             size="custom"
-            rounding="xl"
+            rounding="pill"
+            color="tertiary"
             loading={acting}
             class={buttonSquare}
           >
@@ -184,7 +193,8 @@
       }}
       size="custom"
       class={buttonSquare}
-      rounding="xl"
+      rounding="pill"
+      color="tertiary"
       loading={saving}
       disabled={saving}
       title={post.saved ? $t('post.actions.unsave') : $t('post.actions.save')}
@@ -196,7 +206,8 @@
     {#snippet target(attachment)}
       <Button
         {@attach post.post.local ? () => {} : attachment}
-        rounding="xl"
+        rounding="pill"
+        color="tertiary"
         size="custom"
         class={buttonSquare}
         onclick={() => {
@@ -236,7 +247,8 @@
         <Button
           {@attach popover}
           title={$t('post.actions.more.label')}
-          rounding="xl"
+          rounding="pill"
+          color="tertiary"
           size="custom"
           class={buttonSquare}
           icon={EllipsisHorizontal}

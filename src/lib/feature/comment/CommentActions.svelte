@@ -51,7 +51,7 @@
     color="tertiary"
     rounding="pill"
     size="sm"
-    class="text-slate-500 dark:text-zinc-400 gap-1!"
+    class="text-slate-500 dark:text-zinc-400 gap-1! pointer-coarse:min-h-10"
     onclick={() => (replying = !replying)}
     disabled={comment.post.locked || disabled || !profile.current.jwt}
     icon={ChatBubbleOvalLeft}
@@ -63,7 +63,7 @@
       {#snippet target(attachment)}
         <Button
           {@attach attachment}
-          class="dark:text-zinc-400 text-slate-600"
+          class="dark:text-zinc-400 text-slate-600 pointer-coarse:min-h-10 pointer-coarse:min-w-10"
           color="tertiary"
           size="square-md"
           rounding="pill"
@@ -81,7 +81,7 @@
         color="tertiary"
         rounding="pill"
         size="square-md"
-        class="text-slate-600 dark:text-zinc-400"
+        class="text-slate-600 dark:text-zinc-400 pointer-coarse:min-h-10 pointer-coarse:min-w-10"
         icon={EllipsisHorizontal}
       ></Button>
     {/snippet}

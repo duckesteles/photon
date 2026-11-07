@@ -32,7 +32,7 @@
 </script>
 
 <ul
-  class="flex flex-col list-none divide-y divide-slate-200 dark:divide-zinc-800"
+  class="flex flex-col list-none gap-2 sm:gap-3 -mx-3 sm:mx-0 max-sm:bg-slate-100 max-sm:dark:bg-zinc-950"
 >
   {#if posts.length === 0}
     <div class="h-full grid place-items-center">
@@ -60,7 +60,7 @@
                 ? 'compact'
                 : settings.view}
               {post}
-              class="transition-all duration-250"
+              class="post-card"
               onhide={() => removePost(post.post.id)}
             />
           {:else if filteredPosts[row].action == 'minimize'}

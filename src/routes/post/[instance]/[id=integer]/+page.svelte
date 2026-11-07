@@ -153,7 +153,9 @@
         tags={tags.tags}
       />
     </div>
-    <h1 class="font-medium font-display text-xl leading-5 tracking-tight">
+    <h1
+      class="font-semibold font-display text-xl sm:text-2xl leading-snug tracking-tight text-slate-900 dark:text-zinc-50"
+    >
       <Markdown inline source={tags.title ?? data.data.value.post.post.name} />
     </h1>
   </header>
@@ -165,7 +167,9 @@
     autoplay={false}
   />
   {#if data.data.value.post.post.body}
-    <div class="text-base text-slate-800 dark:text-zinc-300 leading-normal">
+    <div
+      class="text-base sm:text-[1.0625rem] text-slate-800 dark:text-zinc-300 leading-relaxed max-w-[70ch]"
+    >
       <Markdown source={data.data.value.post.post.body} />
     </div>
   {/if}

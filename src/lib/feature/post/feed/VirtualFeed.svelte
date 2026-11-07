@@ -176,7 +176,7 @@
     {:else}
       <VirtualList
         id="feed"
-        class="divide-y -mx-3 sm:-mx-6 divide-slate-100 dark:divide-zinc-900"
+        class="-mx-3 sm:mx-0 max-sm:bg-slate-100 max-sm:dark:bg-zinc-950"
         items={posts}
         {initialOffset}
         overscan={3}
@@ -194,7 +194,7 @@
               : { opacity: 1, duration: 0 }}
             data-index={row}
             class={[
-              'relative post-container',
+              'relative post-container pb-2 sm:pb-3',
               filter.value.action == 'hide' && 'hidden',
             ]}
             {@attach intersectionAttach}
@@ -210,7 +210,7 @@
                   ? 'compact'
                   : settings.view}
                 onhide={() => removePost(posts[row].post.id)}
-                class="px-3 sm:px-6 hover:bg-slate-100/30 hover:dark:bg-zinc-900/30 transition-colors"
+                class="post-card"
               ></Post>
             {:else if filter.value.action == 'minimize'}
               <Button

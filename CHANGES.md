@@ -5,6 +5,46 @@ AGPL-3.0-only. Section 5(a) of the license requires modified versions to carry
 prominent notices stating that they were changed, so every deviation from
 upstream is recorded here.
 
+## 2026-11-07 — Feed redesign
+
+The feed was reworked toward a calmer, more legible card layout, with each
+choice taken from published research rather than taste.
+
+- **One accent colour.** The default theme, now called Photon, adds an
+  indigo-violet accent (`#6348eb` light, `#b8abff` dark, 5.7:1 and 8.3:1
+  contrast). It is used only for the primary action and your own vote, so it
+  stays salient (Treisman & Gelade 1980). The previous monochrome theme remains
+  as the Mono preset.
+- **Cards.** Posts sit in rounded cards, tighter inside than between them, so
+  each reads as one unit (Palmer 1992; curvature preference, Bar & Neta 2006,
+  Chuquichambi et al. 2022). On phones images run edge to edge.
+- **Hierarchy.** Titles are semibold and larger, metadata is quieter, link
+  previews lose their inner border, and post bodies are capped near 70
+  characters per line (Dyson & Haselgrove 2001).
+- **Actions.** Votes and comments are soft pills; other actions are borderless.
+  On touch screens every action is at least 40–44 px tall (Parhi et al. 2006).
+  Voting answers instantly with a short pop and a haptic tick (Hoggan et al.
+  2008), and motion is switched off under `prefers-reduced-motion`.
+- **Defaults.** New visitors get the cozy view and follow their system colour
+  scheme instead of being forced into dark mode (Piepenbrock et al. 2013 on
+  polarity). Existing settings are untouched.
+- **Accessibility.** Muted text in dark mode now meets 4.5:1.
+
+Two fixes came out of this:
+
+- Translations left empty on Weblate (over 4,500 strings across 16 languages)
+  rendered as blank labels. Empty strings are now dropped at load, so they fall
+  back to English.
+- Avatars and thumbnails that fail to load show the initials or type icon
+  instead of a broken image.
+
+## 2026-11-07 — Cloudflare builds
+
+`bun.lock` carried entries no package depended on, with dependencies missing
+from the file. Newer bun releases refuse to parse it, so every Cloudflare Pages
+build failed at install. The orphaned entries were pruned; no resolved version
+changed.
+
 ## 2026-08-10 — Surviving a deployment
 
 A new build renames every code-split chunk, and the old ones are removed. A

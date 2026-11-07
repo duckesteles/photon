@@ -102,7 +102,7 @@ $effect.root(() => {
   })
 })
 
-const configuredColorScheme = env.PUBLIC_COLORSCHEME ?? 'dark'
+const configuredColorScheme = env.PUBLIC_COLORSCHEME ?? 'system'
 
 class ThemeState {
   constructor() {

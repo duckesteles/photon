@@ -197,81 +197,40 @@
     }
 
     .btn-primary {
-      background-image: linear-gradient(
-        to bottom,
-        var(--color-primary-800),
-        var(--color-primary-900)
-      );
-      box-shadow: 0px 1.5px 0px 0px var(--color-slate-500) inset;
-      color: var(--color-slate-50);
-      border: 1px solid var(--color-slate-900);
+      background-color: var(--color-primary-900);
+      color: var(--color-white);
+      border: 1px solid transparent;
 
       @variant dark {
-        border-color: var(--color-primary-200);
-        background-image: linear-gradient(
-          to bottom,
-          var(--color-primary-100),
-          var(--color-primary-200)
-        );
-        color: var(--color-zinc-900);
-        box-shadow: 0px 2.5px 0px -1px var(--color-white) inset;
+        background-color: var(--color-primary-100);
+        color: var(--color-zinc-950);
       }
 
       @variant hover {
-        filter: brightness(120%);
+        background-color: var(--color-primary-800);
         @variant dark {
-          filter: brightness(90%);
+          background-color: var(--color-primary-200);
         }
       }
 
       @variant active {
-        filter: brightness(95%);
-        @variant dark {
-          filter: brightness(85%);
-        }
+        filter: brightness(92%);
       }
     }
 
     .btn-secondary {
       border: 1px solid var(--color-slate-200);
-      border-bottom-color: var(--color-slate-300);
       background-color: var(--color-white);
 
       @variant dark {
-        border: 1px solid
-          color-mix(
-            in oklab,
-            var(--color-zinc-800) 80%,
-            var(--color-zinc-900) 20%
-          );
-        background: linear-gradient(
-          to bottom,
-          color-mix(
-            in oklab,
-            var(--color-zinc-800) 50%,
-            var(--color-zinc-900) 50%
-          ),
-          var(--color-zinc-900)
-        );
-        border-top-color: color-mix(
-          in oklab,
-          var(--color-zinc-700) 50%,
-          var(--color-zinc-800) 50%
-        );
+        border-color: var(--color-zinc-800);
+        background-color: var(--color-zinc-900);
       }
 
       @variant hover {
-        background: color-mix(
-          in oklab,
-          var(--color-white),
-          var(--color-slate-50)
-        );
+        background-color: var(--color-slate-50);
         @variant dark {
-          background: color-mix(
-            in oklab,
-            var(--color-zinc-925),
-            var(--color-zinc-900)
-          );
+          background-color: var(--color-zinc-800);
         }
       }
 

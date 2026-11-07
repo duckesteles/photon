@@ -1,21 +1,23 @@
 import { env } from '$env/dynamic/public'
 import type { Theme, ThemeColors } from './theme.svelte'
 
-const PHOTON_DEFAULT = {
-  slate: {
-    25: '252 253 254',
-    50: '248 250 252',
-    100: '241 245 249',
-    200: '226 232 240',
-    300: '203 213 225',
-    400: '148 163 184',
-    500: '100 116 139',
-    600: '71 85 105',
-    700: '51 65 85',
-    800: '30 41 59',
-    900: '15 23 42',
-    950: '2 6 23',
-  },
+const SLATE = {
+  25: '252 253 254',
+  50: '248 250 252',
+  100: '241 245 249',
+  200: '226 232 240',
+  300: '203 213 225',
+  400: '148 163 184',
+  500: '100 116 139',
+  600: '71 85 105',
+  700: '51 65 85',
+  800: '30 41 59',
+  900: '15 23 42',
+  950: '2 6 23',
+}
+
+const PHOTON_MONO = {
+  slate: SLATE,
   zinc: {
     '50': '252 252 254',
     '100': '248 248 251',
@@ -40,6 +42,34 @@ const PHOTON_DEFAULT = {
   },
 }
 
+const PHOTON_DEFAULT = {
+  slate: SLATE,
+  zinc: {
+    '50': '250 250 253',
+    '100': '244 244 249',
+    '200': '233 233 241',
+    '300': '218 218 228',
+    '400': '178 178 192',
+    '500': '138 138 150',
+    '600': '100 100 114',
+    '700': '68 68 80',
+    '800': '45 45 55',
+    '900': '33 33 41',
+    '925': '26 26 33',
+    '950': '20 20 26',
+  },
+  primary: {
+    100: '184 171 255',
+    200: '157 140 255',
+    800: '116 92 245',
+    900: '99 72 235',
+  },
+  other: {
+    black: '0 0 0',
+    white: '255 255 255',
+  },
+}
+
 export function getDefaultColors(): ThemeColors {
   if (!env.PUBLIC_THEME) return PHOTON_DEFAULT
 
@@ -54,15 +84,16 @@ export function getDefaultTheme(): Theme {
   return {
     id: 0,
     colors: getDefaultColors(),
-    name: env.PUBLIC_THEME ? 'Instance Default' : 'Mono',
+    name: env.PUBLIC_THEME ? 'Instance Default' : 'Photon',
   }
 }
 
 export const presets: Theme[] = [
   getDefaultTheme(),
   ...(env.PUBLIC_THEME
-    ? [{ colors: PHOTON_DEFAULT, id: -10, name: 'Mono' }]
+    ? [{ colors: PHOTON_DEFAULT, id: -11, name: 'Photon' }]
     : []),
+  { colors: PHOTON_MONO, id: -10, name: 'Mono' },
   {
     colors: {
       slate: {

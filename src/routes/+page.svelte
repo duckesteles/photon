@@ -38,7 +38,7 @@
   </title>
 </svelte:head>
 
-<Header pageHeader>
+<Header pageHeader size="md">
   {$t('routes.frontpage.title')}
   {#snippet extended()}
     <form class="contents" method="get" action={page.url.pathname}>

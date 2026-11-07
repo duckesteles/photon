@@ -193,5 +193,29 @@
         }
       }
     }
+
+    .nav-btn.nav-btn-sm-primary {
+      @variant md {
+        border-radius: 9999px;
+        background-color: var(--color-primary-900);
+        color: var(--color-white);
+        margin-left: calc(var(--spacing) * 1);
+
+        @variant hover {
+          background-color: var(--color-primary-800);
+          color: var(--color-white);
+        }
+
+        @variant dark {
+          background-color: var(--color-primary-100);
+          color: var(--color-zinc-950);
+
+          @variant hover {
+            background-color: var(--color-primary-200);
+            color: var(--color-zinc-950);
+          }
+        }
+      }
+    }
   }
 </style>

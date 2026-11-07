@@ -7,7 +7,7 @@
   import { settings } from '$lib/app/settings.svelte'
   import FormattedNumber from '$lib/ui/util/FormattedNumber.svelte'
   import { toast } from 'mono-svelte'
-  import { ChevronDown, ChevronUp, Icon } from 'svelte-hero-icons/dist'
+  import { ArrowDown, ArrowUp, Icon } from 'svelte-hero-icons/dist'
   import { backOut } from 'svelte/easing'
   import { fly } from 'svelte/transition'
   import { vote as voteItem } from '../legacy/contentview'
@@ -26,6 +26,8 @@
     downvotes = $bindable(),
     comment,
   }: Props = $props()
+
+  let popped = $state(0)
 
   const castVote = async (newVote: number) => {
     if (navigator.vibrate) navigator.vibrate(1)
@@ -55,6 +57,7 @@
     }
 
     vote = newVote
+    popped = newVote
 
     voteItem(comment, newVote)
       .then((res) => ({ upvotes, downvotes } = res))
@@ -78,8 +81,7 @@
   <button
     onclick={() => castVote(vote == targetNum ? 0 : targetNum)}
     class={[
-      'flex items-center gap-0.5 transition-colors relative cursor-pointer px-1.5 py-1',
-      'first:rounded-l-3xl last:rounded-r-3xl',
+      'flex items-center gap-1 transition-colors relative cursor-pointer px-2 py-1 pointer-coarse:min-h-10 rounded-full',
       'last:flex-row-reverse',
       vote == targetNum
         ? shouldShowVoteColor(
@@ -95,8 +97,12 @@
         : 'post.actions.vote.downvote',
     )}
   >
-    <Icon src={target == 'upvote' ? ChevronUp : ChevronDown} size="18" micro />
-    <div class="grid text-sm z-20">
+    {#key popped}
+      <span class={['grid', popped == targetNum && 'vote-pop']}>
+        <Icon src={target == 'upvote' ? ArrowUp : ArrowDown} size="16" micro />
+      </span>
+    {/key}
+    <div class="grid text-sm z-20 tabular-nums">
       {#key votes}
         <span
           style="grid-column: 1; grid-row: 1;"
@@ -116,9 +122,8 @@
 
 <div
   class={[
-    'h-full relative flex items-center overflow-hidden rounded-full font-medium',
+    'h-full relative flex items-center overflow-hidden rounded-full font-semibold',
     voteRatio < 85 && settings.voteRatioBar && 'vote-ratio',
-    'divide-x divide-slate-200 dark:divide-zinc-800 border border-slate-200 dark:border-zinc-800',
   ]}
   style="--vote-ratio: {voteRatio}%;"
 >

@@ -198,7 +198,7 @@
   class={[
     'grid w-full meta',
     community ? 'grid-rows-2' : 'grid-rows-1 minimal',
-    'text-xs min-w-0 max-w-full text-slate-600 dark:text-zinc-400',
+    'text-[0.8125rem] leading-snug min-w-0 max-w-full text-slate-600 dark:text-zinc-400',
   ]}
   class:compact={view == 'compact'}
   {style}
@@ -360,10 +360,12 @@
   {@const useAttachedUrl = settings.posts.titleOpensUrl && postUrl}
   <h3
     class={[
-      'font-medium max-sm:mt-0! font-display',
+      'font-semibold max-sm:mt-0! font-display leading-snug text-slate-900 dark:text-zinc-50',
       titleClass,
-      settings.markReadPosts && read && 'text-slate-600 dark:text-zinc-400',
-      view == 'compact' ? 'text-base' : 'text-lg',
+      settings.markReadPosts &&
+        read &&
+        'text-slate-500! dark:text-zinc-400! font-medium',
+      view == 'compact' ? 'text-base' : 'text-[1.125rem]',
     ]}
     style="grid-area: title;"
   >

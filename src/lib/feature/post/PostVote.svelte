@@ -1,10 +1,6 @@
 <script lang="ts" module>
   export const voteColor = (vote: number) =>
-    vote == 1
-      ? `btn-primary border-0! border border-transparent`
-      : vote == -1
-        ? `bg-red-500 text-slate-50 dark:bg-red-400 dark:text-zinc-900`
-        : ''
+    vote == 1 ? `vote-up` : vote == -1 ? `vote-down` : ''
 
   export const shouldShowVoteColor = (
     vote: number,
@@ -24,7 +20,7 @@
   import { settings } from '$lib/app/settings.svelte'
   import FormattedNumber from '$lib/ui/util/FormattedNumber.svelte'
   import { toast } from 'mono-svelte'
-  import { ChevronDown, ChevronUp, Icon } from 'svelte-hero-icons/dist'
+  import { ArrowDown, ArrowUp, Icon } from 'svelte-hero-icons/dist'
   import { backOut } from 'svelte/easing'
   import { fly } from 'svelte/transition'
   import { vote as voteItem } from '../legacy/contentview'
@@ -48,6 +44,8 @@
     showCounts = true,
     children,
   }: Props = $props()
+
+  let popped = $state(0)
 
   const castVote = async (newVote: number) => {
     if (navigator.vibrate) navigator.vibrate(1)
@@ -77,6 +75,7 @@
     }
 
     vote = newVote
+    popped = newVote
 
     voteItem(post, newVote)
       .then((res) => ({ upvotes, downvotes, score } = res))
@@ -96,14 +95,10 @@
   <button
     onclick={() => castVote(vote == targetNum ? 0 : targetNum)}
     class={[
-      'flex items-center gap-0.5 transition-colors relative cursor-pointer h-full p-2 first:border-r-0! first:rounded-l-[inherit] last:rounded-r-[inherit]',
+      'vote-btn flex items-center gap-1 relative cursor-pointer h-full px-2.5 rounded-full',
       'last:flex-row-reverse',
-      vote == targetNum
-        ? shouldShowVoteColor(
-            vote,
-            target == 'upvote' ? 'upvotes' : 'downvotes',
-          )
-        : 'btn-secondary',
+      vote == targetNum &&
+        shouldShowVoteColor(vote, target == 'upvote' ? 'upvotes' : 'downvotes'),
     ]}
     aria-pressed={vote == targetNum}
     aria-label={$t(
@@ -112,9 +107,13 @@
         : 'post.actions.vote.downvote',
     )}
   >
-    <Icon src={target == 'upvote' ? ChevronUp : ChevronDown} size="20" micro />
+    {#key popped}
+      <span class={['grid', popped == targetNum && 'vote-pop']}>
+        <Icon src={target == 'upvote' ? ArrowUp : ArrowDown} size="18" mini />
+      </span>
+    {/key}
     {#if showCounts}
-      <div class="grid text-sm z-20">
+      <div class="grid text-sm z-20 tabular-nums">
         {#key votes}
           <span
             style="grid-column: 1; grid-row: 1;"
@@ -139,7 +138,7 @@
   )}
   <div
     class={[
-      'rounded-xl h-full font-medium flex relative overflow-hidden',
+      'vote-group rounded-full h-full font-semibold flex relative overflow-hidden',
       voteRatio < 85 && settings.voteRatioBar && 'vote-ratio',
     ]}
     aria-label={$t('aria.vote.group')}
@@ -153,6 +152,29 @@
 {/if}
 
 <style>
+  @reference '../../../app.css';
+
+  .vote-group {
+    background-color: var(--color-slate-100);
+
+    @variant dark {
+      background-color: var(--color-zinc-800);
+    }
+  }
+
+  .vote-btn {
+    transition:
+      background-color 150ms ease-out,
+      color 150ms ease-out;
+
+    @variant hover {
+      background-color: var(--color-slate-200);
+      @variant dark {
+        background-color: var(--color-zinc-700);
+      }
+    }
+  }
+
   .vote-ratio {
     z-index: 0;
   }

@@ -143,6 +143,14 @@
     }
   }
 
+  :global(.post-card) .post-image-container {
+    @variant max-sm {
+      margin-inline: calc(var(--spacing) * -4);
+      border-radius: 0;
+      border-inline-width: 0;
+    }
+  }
+
   .post-image-blur-container {
     position: absolute;
     inset: 0;

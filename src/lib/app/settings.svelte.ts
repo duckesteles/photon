@@ -99,12 +99,11 @@ const settingsSchema = {
   },
   modlogCardView: {
     default: (toBool(env.PUBLIC_MODLOG_CARD_VIEW) ?? undefined) as
-      | boolean
-      | undefined,
+      boolean | undefined,
   },
   debugInfo: { default: false, env: 'PUBLIC_DEBUG_INFO' },
   expandImages: { default: true, env: 'PUBLIC_EXPAND_IMAGES' },
-  view: { default: 'compact' as View, env: 'PUBLIC_VIEW' },
+  view: { default: 'cozy' as View, env: 'PUBLIC_VIEW' },
   font: {
     default: 'inter' as 'inter' | 'system' | 'browser' | 'serifs',
     env: 'PUBLIC_FONT',

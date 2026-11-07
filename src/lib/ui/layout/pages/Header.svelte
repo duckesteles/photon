@@ -2,9 +2,9 @@
   import { t } from '$lib/app/i18n'
 
   const sizes = {
-    sm: 'text-2xl',
-    md: 'text-3xl',
-    lg: 'text-4xl',
+    sm: 'text-xl sm:text-2xl',
+    md: 'text-2xl sm:text-3xl',
+    lg: 'text-3xl sm:text-4xl',
     xl: 'text-6xl',
   }
 
@@ -31,8 +31,8 @@
   class={[
     pageHeader &&
       `w-[calc(100%+1.5rem)] sm:w-[calc(100%+3rem)]
-  bg-slate-50 dark:bg-zinc-950 -mx-3 sm:-mx-6 sm:px-6 sm:pb-6 px-4 pb-4 -mt-64 pt-64
-   border-b border-slate-100 dark:border-zinc-900 font-display margin z-0 mb-3 sm:mb-6`,
+  bg-slate-50 dark:bg-zinc-950 -mx-3 sm:-mx-6 sm:px-6 sm:pb-5 px-4 pb-3 -mt-64 pt-64
+   border-b border-slate-100 dark:border-zinc-900 font-display margin z-0 mb-3 sm:mb-5`,
   ]}
   {style}
   aria-label={$t('aria.element.pageHeader')}
@@ -41,7 +41,7 @@
     <h1
       class={[
         sizes[size],
-        'flex gap-2 w-full tracking-tight font-medium',
+        'flex gap-2 w-full tracking-tight font-semibold',
         clazz,
       ]}
     >
@@ -49,7 +49,7 @@
     </h1>
   {/if}
   {#if extended}
-    <div class="flex flex-col gap-3 mt-3">
+    <div class="flex flex-col gap-3 mt-2 sm:mt-3">
       {@render extended?.()}
     </div>
   {/if}
