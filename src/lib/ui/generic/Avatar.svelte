@@ -30,9 +30,11 @@
   let optimizedURLs = $derived(
     [1.5, 3].map((n) => url && optimizeImageURL(url, (res || width) * n)),
   )
+
+  let failedURL = $state<string>()
 </script>
 
-{#if url && optimizedURLs[0] != undefined}
+{#if url && optimizedURLs[0] != undefined && failedURL != url}
   <img
     {...rest}
     loading="lazy"
@@ -48,6 +50,7 @@
       clazz,
     ]}
     style="width: {width}px; height: {width}px; {style}"
+    onerror={() => (failedURL = url)}
   />
 {:else}
   <div

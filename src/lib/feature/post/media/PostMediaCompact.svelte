@@ -38,6 +38,7 @@
   }: Props = $props()
 
   let size = $derived(thumbnailSize(view))
+  let failed = $state(false)
 </script>
 
 <!--
@@ -64,7 +65,7 @@
         'btn-secondary hover-scale-effect',
       ]}
     >
-      {#if post.thumbnail_url || type == 'image'}
+      {#if (post.thumbnail_url || type == 'image') && !failed}
         {@const thumbnail = post.thumbnail_url != undefined && type != 'image'}
         <picture class="rounded-[inherit]">
           <!--I would add AVIF, but lemmy.world's AVIF is broken as of currently-->
@@ -99,6 +100,7 @@
             ]}
             alt={post.alt_text ?? ' '}
             class:blur-xl={blur}
+            onerror={() => (failed = true)}
           />
         </picture>
         {#if type != 'image'}
